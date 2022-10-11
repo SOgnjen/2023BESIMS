@@ -1,11 +1,6 @@
 ﻿using HospitalLibrary.Core.Model;
 using HospitalLibrary.Core.Service;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace HospitalAPI.Controllers
 {
