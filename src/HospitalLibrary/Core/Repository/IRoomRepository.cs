@@ -1,13 +1,9 @@
 ﻿using HospitalLibrary.Core.Model;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace HospitalLibrary.Core.Service
+namespace HospitalLibrary.Core.Repository
 {
-    public interface IRoomService
+    public interface IRoomRepository
     {
         IEnumerable<Room> GetAll();
         Room GetById(int id);
