@@ -6,6 +6,7 @@ namespace HospitalLibrary.Settings
     public class HospitalDbContext : DbContext
     {
         public DbSet<Room> Rooms { get; set; }
+        public DbSet<User> Users { get; set; }
 
         public HospitalDbContext(DbContextOptions<HospitalDbContext> options) : base(options) { }
 
@@ -16,6 +17,49 @@ namespace HospitalLibrary.Settings
                 new Room() { Id = 2, Number = "204", Floor = 2 },
                 new Room() { Id = 3, Number = "305B", Floor = 3 }
             );
+
+            modelBuilder.Entity<User>().HasData(
+                new User
+                {
+                    Id = 1,
+                    FirstName = "John",
+                    LastName = "Doe",
+                    Emails = "john.doe@example.com",
+                    Password = "password",
+                    Role = UserRole.Role_User,
+                    Address = "123 Main St",
+                    PhoneNumber = "555-1234",
+                    Jmbg = 1234567890,
+                    Gender = Gender.Male
+                },
+                new User
+                {
+                    Id = 2,
+                    FirstName = "Jane",
+                    LastName = "Smith",
+                    Emails = "jane.smith@example.com",
+                    Password = "password",
+                    Role = UserRole.Role_Medic,
+                    Address = "456 Elm St",
+                    PhoneNumber = "555-5678",
+                    Jmbg = 987654321,
+                    Gender = Gender.Female
+                },
+                new User
+                {
+                    Id = 3,
+                    FirstName = "Bob",
+                    LastName = "Johnson",
+                    Emails = "bob.johnson@example.com",
+                    Password = "password",
+                    Role = UserRole.Role_Administrator,
+                    Address = "789 Oak St",
+                    PhoneNumber = "555-9012",
+                    Jmbg = 11111111,
+                    Gender = Gender.Male
+                }
+            );
+
             base.OnModelCreating(modelBuilder);
         }
     }
