@@ -34,9 +34,8 @@ namespace HospitalLibrary.Core.Model
         [Required]
         public Gender Gender { get; set; }
 
-        public User(int id, string emails, string password, string firstName, string lastName, UserRole role, string address, string phoneNumber, int jmbg, Gender gender)
+        public User(string emails, string password, string firstName, string lastName, UserRole role, string address, string phoneNumber, int jmbg, Gender gender)
         {
-            Id = id;
             Emails = emails;
             Password = password;
             FirstName = firstName;
