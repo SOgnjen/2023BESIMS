@@ -14,5 +14,6 @@ namespace HospitalLibrary.Core.Service
         void Create(User user);
         void Update(User user);
         void Delete(User user);
+        User FindRequiredLoginUser(string email, string password);
     }
 }

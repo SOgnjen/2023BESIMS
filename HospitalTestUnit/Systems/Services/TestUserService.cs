@@ -198,5 +198,51 @@ namespace HospitalTestUnit.Systems.Services
             // Assert
             userRepositoryMock.Verify(repo => repo.Delete(userToDelete), Times.Once);
         }
+
+        [Fact]
+        public void FindRequiredLoginUser_ReturnsUserWithMatchingEmailAndPassword()
+        {
+            // Arrange
+            var emailToFind = "john.doe@example.com";
+            var passwordToFind = "password";
+            var userToReturn = new User
+            {
+                Id = 1,
+                FirstName = "John",
+                LastName = "Doe",
+                Emails = emailToFind,
+                Password = passwordToFind,
+                Role = UserRole.Role_User,
+                Address = "123 Main St",
+                PhoneNumber = "555-1234",
+                Jmbg = 1234567890,
+                Gender = Gender.Male
+            };
+
+            userRepositoryMock.Setup(repo => repo.FindUserByEmailAndPassword(emailToFind, passwordToFind)).Returns(userToReturn);
+
+            // Act
+            var result = userService.FindRequiredLoginUser(emailToFind, passwordToFind);
+
+            // Assert
+            result.Should().NotBeNull();
+            result.Should().BeEquivalentTo(userToReturn);
+        }
+
+        [Fact]
+        public void FindRequiredLoginUser_ReturnsNullForInvalidCredentials()
+        {
+            // Arrange
+            var emailToFind = "nonexistent@example.com";
+            var passwordToFind = "invalidpassword";
+
+            userRepositoryMock.Setup(repo => repo.FindUserByEmailAndPassword(emailToFind, passwordToFind)).Returns((User)null);
+
+            // Act
+            var result = userService.FindRequiredLoginUser(emailToFind, passwordToFind);
+
+            // Assert
+            result.Should().BeNull();
+        }
     }
 }

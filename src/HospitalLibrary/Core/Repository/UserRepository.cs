@@ -30,6 +30,11 @@ namespace HospitalLibrary.Core.Repository
             _context.SaveChanges();
         }
 
+        public User FindUserByEmailAndPassword(string email, string password)
+        {
+            return _context.Users.FirstOrDefault(u => u.Emails == email && u.Password == password);
+        }
+
         public IEnumerable<User> GetAll()
         {
             return _context.Users.ToList();

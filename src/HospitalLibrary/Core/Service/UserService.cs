@@ -27,6 +27,11 @@ namespace HospitalLibrary.Core.Service
             _userRepository.Delete(user);
         }
 
+        public User FindRequiredLoginUser(string email, string password)
+        {
+            return _userRepository.FindUserByEmailAndPassword(email, password);
+        }
+
         public IEnumerable<User> GetAll()
         {
             return _userRepository.GetAll();

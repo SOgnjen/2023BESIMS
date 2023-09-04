@@ -2,6 +2,7 @@
 using HospitalAPI.Controllers;
 using HospitalLibrary.Core.Model;
 using HospitalLibrary.Core.Service;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System;
@@ -18,6 +19,7 @@ namespace HospitalTestUnit.Systems.Controllers
         private readonly List<User> users;
         private Mock<IUserService> userServiceMock;
         private UsersController usersController;
+        private Mock<HttpContext> httpContextMock;
 
         public TestUserController()
         {
@@ -65,7 +67,12 @@ namespace HospitalTestUnit.Systems.Controllers
             };
 
             userServiceMock = new Mock<IUserService>();
-            usersController = new UsersController(userServiceMock.Object); 
+            httpContextMock = new Mock<HttpContext>();
+
+            var httpContextAccessorMock = new Mock<IHttpContextAccessor>();
+            httpContextAccessorMock.Setup(a => a.HttpContext).Returns(httpContextMock.Object);
+
+            usersController = new UsersController(userServiceMock.Object, httpContextAccessorMock.Object);
         }
 
         [Fact]
@@ -265,7 +272,74 @@ namespace HospitalTestUnit.Systems.Controllers
             result.StatusCode.Should().Be(404);
         }
 
+        [Fact]
+        public void Login_ReturnsOkForValidLogin()
+        {
+            // Arrange
+            var email = "john.doe@example.com";
+            var password = "password";
+            var userToReturn = new User
+            {
+                Id = 1,
+                FirstName = "John",
+                LastName = "Doe",
+                Emails = email,
+                Password = password,
+                Role = UserRole.Role_User,
+                Address = "123 Main St",
+                PhoneNumber = "555-1234",
+                Jmbg = 1234567890,
+                Gender = Gender.Male
+            };
 
+            userServiceMock.Setup(service => service.FindRequiredLoginUser(email, password)).Returns(userToReturn);
+
+            // Configure the HttpContext mock for sessions
+            httpContextMock.SetupGet(c => c.Session).Returns(new Mock<ISession>().Object);
+
+            // Act
+            var result = usersController.Login(email, password) as OkObjectResult;
+
+            // Assert
+            result.Should().NotBeNull();
+            result.StatusCode.Should().Be(200);
+
+            // Check the content of the result
+            var content = result.Value as object;
+            content.Should().NotBeNull();
+            content.Should().BeEquivalentTo(new { Message = "Login successful", UserId = userToReturn.Id });
+        }
+
+        [Fact]
+        public void Login_ReturnsUnauthorizedForInvalidCredentials()
+        {
+            // Arrange
+            var email = "john.doe@example.com";
+            var password = "incorrectpassword"; // This is an incorrect password
+            userServiceMock.Setup(service => service.FindRequiredLoginUser(email, password)).Returns((User)null);
+
+            // Act
+            var result = usersController.Login(email, password) as UnauthorizedResult;
+
+            // Assert
+            result.Should().NotBeNull();
+            result.StatusCode.Should().Be(401);
+        }
+
+
+        [Fact]
+        public void Logout_ReturnsOk()
+        {
+            // Configure the HttpContext mock for sessions
+            httpContextMock.SetupGet(c => c.Session).Returns(new Mock<ISession>().Object);
+
+            // Act
+            var result = usersController.Logout() as OkObjectResult;
+
+            // Assert
+            result.Should().NotBeNull();
+            result.StatusCode.Should().Be(200);
+        }
 
 
 

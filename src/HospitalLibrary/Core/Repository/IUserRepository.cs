@@ -14,5 +14,6 @@ namespace HospitalLibrary.Core.Repository
         void Create(User user);
         void Update(User user);
         void Delete(User user);
+        User FindUserByEmailAndPassword(string email, string password);
     }
 }

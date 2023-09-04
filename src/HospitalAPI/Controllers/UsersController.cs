@@ -11,10 +11,12 @@ namespace HospitalAPI.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public UsersController(IUserService userService)
+        public UsersController(IUserService userService, IHttpContextAccessor httpContextAccessor)
         {
             _userService = userService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         // GET: api/users
@@ -88,6 +90,42 @@ namespace HospitalAPI.Controllers
 
             _userService.Delete(user);
             return NoContent();
+        }
+
+        // POST api/users/login
+        [HttpPost("login")]
+        public IActionResult Login(string email, string password)
+        {
+            var user = _userService.FindRequiredLoginUser(email, password);
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+
+            var sessionId = Guid.NewGuid().ToString();
+
+            _httpContextAccessor.HttpContext.Session.SetString("SessionId", sessionId);
+
+            _httpContextAccessor.HttpContext.Session.SetInt32("UserId", user.Id);
+            _httpContextAccessor.HttpContext.Session.SetString("UserEmail", user.Emails);
+            _httpContextAccessor.HttpContext.Session.SetString("UserFirstName", user.FirstName);
+            _httpContextAccessor.HttpContext.Session.SetString("UserLastName", user.LastName);
+            _httpContextAccessor.HttpContext.Session.SetString("UserRole", user.Role.ToString());
+            _httpContextAccessor.HttpContext.Session.SetString("UserAddress", user.Address);
+            _httpContextAccessor.HttpContext.Session.SetString("UserPhoneNumber", user.PhoneNumber);
+            _httpContextAccessor.HttpContext.Session.SetInt32("UserJmbg", user.Jmbg);
+            _httpContextAccessor.HttpContext.Session.SetString("UserGender", user.Gender.ToString());
+
+            return Ok(new { Message = "Login successful", UserId = user.Id });
+        }
+
+        // POST api/users/logout
+        [HttpPost("logout")]
+        public IActionResult Logout()
+        {
+            _httpContextAccessor.HttpContext.Session.Remove("SessionId");
+
+            return Ok(new { Message = "Logout successful" });
         }
     }
 }

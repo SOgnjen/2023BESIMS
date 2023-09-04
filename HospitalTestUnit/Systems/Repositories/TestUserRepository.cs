@@ -263,6 +263,57 @@ namespace HospitalTestUnit.Systems.Repositories
             deletedUser.Should().BeNull();
         }
 
+        [Fact]
+        public void FindUserByEmailAndPassword_ReturnsUserWithMatchingEmailAndPassword()
+        {
+            // Arrange
+            dbContext = CreateDbContext();
+            var userRepository = new UserRepository(dbContext);
+
+            var emailToFind = "john.doe@example.com";
+            var passwordToFind = "password";
+            var userToReturn = new User
+            {
+                Id = 1,
+                FirstName = "John",
+                LastName = "Doe",
+                Emails = emailToFind,
+                Password = passwordToFind,
+                Role = UserRole.Role_User,
+                Address = "123 Main St",
+                PhoneNumber = "555-1234",
+                Jmbg = 1234567890,
+                Gender = Gender.Male
+            };
+
+            dbContext.Users.Add(userToReturn);
+            dbContext.SaveChanges();
+
+            // Act
+            var result = userRepository.FindUserByEmailAndPassword(emailToFind, passwordToFind);
+
+            // Assert
+            result.Should().NotBeNull();
+            result.Should().BeEquivalentTo(userToReturn);
+        }
+
+        [Fact]
+        public void FindUserByEmailAndPassword_ReturnsNullForInvalidCredentials()
+        {
+            // Arrange
+            dbContext = CreateDbContext();
+            var userRepository = new UserRepository(dbContext);
+
+            var emailToFind = "nonexistent@example.com";
+            var passwordToFind = "invalidpassword";
+
+            // Act
+            var result = userRepository.FindUserByEmailAndPassword(emailToFind, passwordToFind);
+
+            // Assert
+            result.Should().BeNull();
+        }
+
 
     }
 }
