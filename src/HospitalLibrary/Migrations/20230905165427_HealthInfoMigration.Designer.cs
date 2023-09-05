@@ -3,15 +3,17 @@ using System;
 using HospitalLibrary.Settings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace HospitalLibrary.Migrations
 {
     [DbContext(typeof(HospitalDbContext))]
-    partial class HospitalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230905165427_HealthInfoMigration")]
+    partial class HealthInfoMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -74,7 +76,7 @@ namespace HospitalLibrary.Migrations
                             FatPercentage = 22.0,
                             LastMenstruation = new DateTime(1900, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LowerBloodPreassure = 85,
-                            OwnersJmbg = 1234567890,
+                            OwnersJmbg = 987654321,
                             SugarLever = 95,
                             UpperBloodPreassure = 130,
                             Weight = 72.5
@@ -86,7 +88,7 @@ namespace HospitalLibrary.Migrations
                             FatPercentage = 18.5,
                             LastMenstruation = new DateTime(1900, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LowerBloodPreassure = 75,
-                            OwnersJmbg = 1234567890,
+                            OwnersJmbg = 11111111,
                             SugarLever = 88,
                             UpperBloodPreassure = 140,
                             Weight = 68.799999999999997

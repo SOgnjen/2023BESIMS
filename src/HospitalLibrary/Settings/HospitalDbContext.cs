@@ -1,5 +1,6 @@
 ﻿using HospitalLibrary.Core.Model;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace HospitalLibrary.Settings
 {
@@ -7,6 +8,7 @@ namespace HospitalLibrary.Settings
     {
         public DbSet<Room> Rooms { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<HealthInfo> HealthInfos { get; set; }
 
         public HospitalDbContext(DbContextOptions<HospitalDbContext> options) : base(options) { }
 
@@ -57,6 +59,47 @@ namespace HospitalLibrary.Settings
                     PhoneNumber = "555-9012",
                     Jmbg = 11111111,
                     Gender = Gender.Male
+                }
+            );
+
+            modelBuilder.Entity<HealthInfo>().HasData(
+                new HealthInfo
+                {
+                    Id = 1,
+                    Date = new DateTime(2023, 1, 28),
+                    OwnersJmbg = 1234567890,
+                    UpperBloodPreassure = 120,
+                    LowerBloodPreassure = 80,
+                    SugarLever = 90,
+                    FatPercentage = 20.5,
+                    Weight = 70.0,
+                    LastMenstruation = new DateTime(1900, 1, 1)
+
+                },
+                new HealthInfo
+                {
+                    Id = 2,
+                    Date = new DateTime(2023, 4, 20),
+                    OwnersJmbg = 1234567890,
+                    UpperBloodPreassure = 130,
+                    LowerBloodPreassure = 85,
+                    SugarLever = 95,
+                    FatPercentage = 22.0,
+                    Weight = 72.5,
+                    LastMenstruation = new DateTime(1900, 1, 1)
+                },
+
+                new HealthInfo
+                {
+                    Id = 3,
+                    Date = new DateTime(2023, 9, 5),
+                    OwnersJmbg = 1234567890,
+                    UpperBloodPreassure = 140,
+                    LowerBloodPreassure = 75,
+                    SugarLever = 88,
+                    FatPercentage = 18.5,
+                    Weight = 68.8,
+                    LastMenstruation = new DateTime(1900, 1, 1)
                 }
             );
 
