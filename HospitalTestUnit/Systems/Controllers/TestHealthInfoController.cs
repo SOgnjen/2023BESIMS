@@ -260,5 +260,39 @@ namespace HospitalTestUnit.Systems.Controllers
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(404);
         }
+
+        [Fact]
+        public void GetAllOfOwner_ReturnsHealthInfosForMatchingOwner()
+        {
+            // Arrange
+            var targetOwnersJmbg = 1234567890;
+            var healthInfosWithMatchingJmbg = healthInfos.Where(h => h.OwnersJmbg == targetOwnersJmbg).ToList();
+            healthInfoServiceMock.Setup(service => service.GetAllOfOwner(targetOwnersJmbg)).Returns(healthInfosWithMatchingJmbg);
+
+            // Act
+            var result = healthInfoController.GetAllOfOwner(targetOwnersJmbg) as OkObjectResult;
+
+            // Assert
+            result.Should().NotBeNull();
+            result.StatusCode.Should().Be(200);
+            result.Value.Should().BeOfType<List<HealthInfo>>();
+            result.Value.Should().BeEquivalentTo(healthInfosWithMatchingJmbg);
+        }
+
+        [Fact]
+        public void GetAllOfOwner_ReturnsNotFoundForNoMatchingHealthInfos()
+        {
+            // Arrange
+            var targetOwnersJmbg = 999999999; // Use a JMBG that doesn't exist in your test data
+            healthInfoServiceMock.Setup(service => service.GetAllOfOwner(targetOwnersJmbg)).Returns(new List<HealthInfo>());
+
+            // Act
+            var result = healthInfoController.GetAllOfOwner(targetOwnersJmbg) as NotFoundResult;
+
+            // Assert
+            result.Should().NotBeNull();
+            result.StatusCode.Should().Be(404);
+        }
+
     }
 }

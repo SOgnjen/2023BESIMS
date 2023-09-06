@@ -14,5 +14,6 @@ namespace HospitalLibrary.Core.Service
         void Create(HealthInfo healthInfo);
         void Update(HealthInfo healthInfo);
         void Delete(HealthInfo healthInfo);
+        IEnumerable<HealthInfo> GetAllOfOwner(int ownersJmbg);
     }
 }

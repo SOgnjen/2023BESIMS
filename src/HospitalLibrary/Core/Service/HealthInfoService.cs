@@ -32,6 +32,11 @@ namespace HospitalLibrary.Core.Service
             return _healthInfoRepository.GetAll();
         }
 
+        public IEnumerable<HealthInfo> GetAllOfOwner(int ownersJmbg)
+        {
+            return _healthInfoRepository.GetAllOfOwner(ownersJmbg);
+        }
+
         public HealthInfo GetById(int id)
         {
             return _healthInfoRepository.GetById(id);

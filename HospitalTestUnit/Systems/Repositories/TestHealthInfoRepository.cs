@@ -261,6 +261,41 @@ namespace HospitalTestUnit.Systems.Repositories
             deletedHealthInfo.Should().BeNull();
         }
 
+        [Fact]
+        public void GetAllOfOwner_ReturnsHealthInfosWithMatchingOwnersJmbg()
+        {
+            // Arrange
+            dbContext = CreateDbContext();
+            dbContext.HealthInfos.AddRange(healthInfos);
+            dbContext.SaveChanges();
+            var healthInfoRepository = new HealthInfoRepository(dbContext);
+            var targetOwnersJmbg = 1234567890;
+
+            // Act
+            var result = healthInfoRepository.GetAllOfOwner(targetOwnersJmbg);
+
+            // Assert
+            result.Should().NotBeNull();
+            result.Should().NotBeEmpty();
+            result.Should().BeEquivalentTo(healthInfos.Where(h => h.OwnersJmbg == targetOwnersJmbg));
+        }
+
+        [Fact]
+        public void GetAllOfOwner_ReturnsEmptyListWhenNoHealthInfosForOwnerExist()
+        {
+            // Arrange
+            dbContext = CreateDbContext();
+            var healthInfoRepository = new HealthInfoRepository(dbContext);
+            var targetOwnersJmbg = 99999999;
+
+            // Act
+            var result = healthInfoRepository.GetAllOfOwner(targetOwnersJmbg);
+
+            // Assert
+            result.Should().NotBeNull();
+            result.Should().BeEmpty();
+        }
+
 
     }
 }

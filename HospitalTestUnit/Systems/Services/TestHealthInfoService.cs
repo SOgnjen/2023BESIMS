@@ -194,5 +194,37 @@ namespace HospitalTestUnit.Systems.Services
             // Assert
             healthInfoRepositoryMock.Verify(repo => repo.Delete(healthInfoToDelete), Times.Once);
         }
+
+        [Fact]
+        public void GetHealthInfosByOwnersJmbg_ReturnsHealthInfosWithMatchingOwnersJmbg()
+        {
+            // Arrange
+            var targetOwnersJmbg = 1234567890;
+            var healthInfosWithMatchingJmbg = healthInfos.Where(h => h.OwnersJmbg == targetOwnersJmbg);
+            healthInfoRepositoryMock.Setup(repo => repo.GetAllOfOwner(targetOwnersJmbg)).Returns(healthInfosWithMatchingJmbg);
+
+            // Act
+            var result = healthInfoService.GetAllOfOwner(targetOwnersJmbg);
+
+            // Assert
+            result.Should().NotBeNull();
+            result.Should().NotBeEmpty();
+            result.Should().BeEquivalentTo(healthInfosWithMatchingJmbg);
+        }
+
+        [Fact]
+        public void GetHealthInfosByOwnersJmbg_ReturnsEmptyListWhenNoMatchingHealthInfosExist()
+        {
+            // Arrange
+            var targetOwnersJmbg = 999999999;
+            healthInfoRepositoryMock.Setup(repo => repo.GetAllOfOwner(targetOwnersJmbg)).Returns(new List<HealthInfo>());
+
+            // Act
+            var result = healthInfoService.GetAllOfOwner(targetOwnersJmbg);
+
+            // Assert
+            result.Should().NotBeNull();
+            result.Should().BeEmpty();
+        }
     }
 }
