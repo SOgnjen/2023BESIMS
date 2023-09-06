@@ -79,7 +79,7 @@ namespace HospitalAPI.Controllers
         }
 
         // DELETE api/users/2
-        [HttpDelete("id")]
+        [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
             var user = _userService.GetById(id);
@@ -94,12 +94,17 @@ namespace HospitalAPI.Controllers
 
         // POST api/users/login
         [HttpPost("login")]
-        public IActionResult Login(string email, string password)
+        public IActionResult Login([FromBody] LoginRequestModel model)
         {
-            var user = _userService.FindRequiredLoginUser(email, password);
+            if (model == null || string.IsNullOrWhiteSpace(model.Email) || string.IsNullOrWhiteSpace(model.Password))
+            {
+                return BadRequest(new { Message = "Email and password are required" });
+            }
+
+            var user = _userService.FindRequiredLoginUser(model.Email, model.Password);
             if (user == null)
             {
-                return Unauthorized();
+                return Unauthorized(new { Message = "Bad credentials" });
             }
 
             var sessionId = Guid.NewGuid().ToString();
@@ -117,6 +122,12 @@ namespace HospitalAPI.Controllers
             _httpContextAccessor.HttpContext.Session.SetString("UserGender", user.Gender.ToString());
 
             return Ok(new { Message = "Login successful", UserId = user.Id });
+        }
+
+        public class LoginRequestModel
+        {
+            public string Email { get; set; }
+            public string Password { get; set; }
         }
 
         // POST api/users/logout

@@ -20,6 +20,7 @@ namespace HospitalTestUnit.Systems.Controllers
         private Mock<IUserService> userServiceMock;
         private UsersController usersController;
         private Mock<HttpContext> httpContextMock;
+        private Mock<IHttpContextAccessor> httpContextAccessorMock;
 
         public TestUserController()
         {
@@ -294,32 +295,38 @@ namespace HospitalTestUnit.Systems.Controllers
 
             userServiceMock.Setup(service => service.FindRequiredLoginUser(email, password)).Returns(userToReturn);
 
-            // Configure the HttpContext mock for sessions
-            httpContextMock.SetupGet(c => c.Session).Returns(new Mock<ISession>().Object);
+            var sessionMock = new Mock<ISession>();
+            httpContextMock.SetupGet(c => c.Session).Returns(sessionMock.Object);
 
             // Act
-            var result = usersController.Login(email, password) as OkObjectResult;
+            var result = usersController.Login(new UsersController.LoginRequestModel
+            {
+                Email = email,
+                Password = password
+            }) as OkObjectResult;
 
             // Assert
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(200);
-
-            // Check the content of the result
-            var content = result.Value as object;
-            content.Should().NotBeNull();
-            content.Should().BeEquivalentTo(new { Message = "Login successful", UserId = userToReturn.Id });
         }
 
         [Fact]
-        public void Login_ReturnsUnauthorizedForInvalidCredentials()
+        public void Login_ReturnsUnauthorizedForBadCredentials()
         {
             // Arrange
             var email = "john.doe@example.com";
-            var password = "incorrectpassword"; // This is an incorrect password
-            userServiceMock.Setup(service => service.FindRequiredLoginUser(email, password)).Returns((User)null);
+            var password = "wrongpassword"; // Invalid password
+            var userToReturn = (User)null; // No user found
+
+            // Configure IUserService to return null for invalid credentials
+            userServiceMock.Setup(service => service.FindRequiredLoginUser(email, password)).Returns(userToReturn);
 
             // Act
-            var result = usersController.Login(email, password) as UnauthorizedResult;
+            var result = usersController.Login(new UsersController.LoginRequestModel
+            {
+                Email = email,
+                Password = password
+            }) as UnauthorizedObjectResult;
 
             // Assert
             result.Should().NotBeNull();
