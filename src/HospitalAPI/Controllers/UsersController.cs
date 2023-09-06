@@ -121,7 +121,7 @@ namespace HospitalAPI.Controllers
             _httpContextAccessor.HttpContext.Session.SetInt32("UserJmbg", user.Jmbg);
             _httpContextAccessor.HttpContext.Session.SetString("UserGender", user.Gender.ToString());
 
-            return Ok(new { Message = "Login successful", UserId = user.Id });
+            return Ok(new { Message = "Login successful", User = user });
         }
 
         public class LoginRequestModel
