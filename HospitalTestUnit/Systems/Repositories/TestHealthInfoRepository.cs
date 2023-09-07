@@ -28,7 +28,7 @@ namespace HospitalTestUnit.Systems.Repositories
                     OwnersJmbg = 1234567890,
                     UpperBloodPreassure = 120,
                     LowerBloodPreassure = 80,
-                    SugarLever = 90,
+                    SugarLevel = 90,
                     FatPercentage = 20.5,
                     Weight = 70.0,
                     LastMenstruation = new DateTime(1900, 1, 1)
@@ -41,7 +41,7 @@ namespace HospitalTestUnit.Systems.Repositories
                     OwnersJmbg = 1234567890,
                     UpperBloodPreassure = 130,
                     LowerBloodPreassure = 85,
-                    SugarLever = 95,
+                    SugarLevel = 95,
                     FatPercentage = 22.0,
                     Weight = 72.5,
                     LastMenstruation = new DateTime(1900, 1, 1)
@@ -54,7 +54,7 @@ namespace HospitalTestUnit.Systems.Repositories
                     OwnersJmbg = 1234567890,
                     UpperBloodPreassure = 140,
                     LowerBloodPreassure = 75,
-                    SugarLever = 88,
+                    SugarLevel = 88,
                     FatPercentage = 18.5,
                     Weight = 68.8,
                     LastMenstruation = new DateTime(1900, 1, 1)
@@ -159,7 +159,7 @@ namespace HospitalTestUnit.Systems.Repositories
                 OwnersJmbg = 1234567890,
                 UpperBloodPreassure = 125,
                 LowerBloodPreassure = 85,
-                SugarLever = 92,
+                SugarLevel = 92,
                 FatPercentage = 21.0,
                 Weight = 71.5,
                 LastMenstruation = new DateTime(1900, 1, 1)
@@ -176,7 +176,7 @@ namespace HospitalTestUnit.Systems.Repositories
             addedHealthInfo.OwnersJmbg.Should().Be(newHealthInfo.OwnersJmbg);
             addedHealthInfo.UpperBloodPreassure.Should().Be(newHealthInfo.UpperBloodPreassure);
             addedHealthInfo.LowerBloodPreassure.Should().Be(newHealthInfo.LowerBloodPreassure);
-            addedHealthInfo.SugarLever.Should().Be(newHealthInfo.SugarLever);
+            addedHealthInfo.SugarLevel.Should().Be(newHealthInfo.SugarLevel);
             addedHealthInfo.FatPercentage.Should().Be(newHealthInfo.FatPercentage);
             addedHealthInfo.Weight.Should().Be(newHealthInfo.Weight);
             addedHealthInfo.LastMenstruation.Should().Be(newHealthInfo.LastMenstruation);
@@ -195,7 +195,7 @@ namespace HospitalTestUnit.Systems.Repositories
                 OwnersJmbg = 1234567890,
                 UpperBloodPreassure = 135,
                 LowerBloodPreassure = 88,
-                SugarLever = 97,
+                SugarLevel = 97,
                 FatPercentage = 23.0,
                 Weight = 73.2,
                 LastMenstruation = new DateTime(1900, 1, 1)
@@ -209,7 +209,7 @@ namespace HospitalTestUnit.Systems.Repositories
             retrievedHealthInfo.Date = new DateTime(2023, 12, 5);
             retrievedHealthInfo.UpperBloodPreassure = 135;
             retrievedHealthInfo.LowerBloodPreassure = 88;
-            retrievedHealthInfo.SugarLever = 97;
+            retrievedHealthInfo.SugarLevel = 97;
             retrievedHealthInfo.FatPercentage = 23.0;
             retrievedHealthInfo.Weight = 73.2;
 
@@ -224,7 +224,7 @@ namespace HospitalTestUnit.Systems.Repositories
             updatedHealthInfo.Date.Should().Be(new DateTime(2023, 12, 5));
             updatedHealthInfo.UpperBloodPreassure.Should().Be(135);
             updatedHealthInfo.LowerBloodPreassure.Should().Be(88);
-            updatedHealthInfo.SugarLever.Should().Be(97);
+            updatedHealthInfo.SugarLevel.Should().Be(97);
             updatedHealthInfo.FatPercentage.Should().Be(23.0);
             updatedHealthInfo.Weight.Should().Be(73.2);
         }
@@ -242,7 +242,7 @@ namespace HospitalTestUnit.Systems.Repositories
                 OwnersJmbg = 1234567890,
                 UpperBloodPreassure = 125,
                 LowerBloodPreassure = 85,
-                SugarLever = 92,
+                SugarLevel = 92,
                 FatPercentage = 21.0,
                 Weight = 71.5,
                 LastMenstruation = new DateTime(1900, 1, 1)

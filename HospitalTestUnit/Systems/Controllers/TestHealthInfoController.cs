@@ -17,7 +17,7 @@ namespace HospitalTestUnit.Systems.Controllers
     {
         private readonly List<HealthInfo> healthInfos;
         private Mock<IHealthInfoService> healthInfoServiceMock;
-        private HealthInfoController healthInfoController;
+        private HealthInfosController healthInfoController;
 
         public TestHealthInfoController()
         {
@@ -30,7 +30,7 @@ namespace HospitalTestUnit.Systems.Controllers
                     OwnersJmbg = 1234567890,
                     UpperBloodPreassure = 120,
                     LowerBloodPreassure = 80,
-                    SugarLever = 90,
+                    SugarLevel = 90,
                     FatPercentage = 20.5,
                     Weight = 70.0,
                     LastMenstruation = new DateTime(1900, 1, 1)
@@ -43,7 +43,7 @@ namespace HospitalTestUnit.Systems.Controllers
                     OwnersJmbg = 1234567890,
                     UpperBloodPreassure = 130,
                     LowerBloodPreassure = 85,
-                    SugarLever = 95,
+                    SugarLevel = 95,
                     FatPercentage = 22.0,
                     Weight = 72.5,
                     LastMenstruation = new DateTime(1900, 1, 1)
@@ -56,7 +56,7 @@ namespace HospitalTestUnit.Systems.Controllers
                     OwnersJmbg = 1234567890,
                     UpperBloodPreassure = 140,
                     LowerBloodPreassure = 75,
-                    SugarLever = 88,
+                    SugarLevel = 88,
                     FatPercentage = 18.5,
                     Weight = 68.8,
                     LastMenstruation = new DateTime(1900, 1, 1)
@@ -65,7 +65,7 @@ namespace HospitalTestUnit.Systems.Controllers
 
             healthInfoServiceMock = new Mock<IHealthInfoService>();
 
-            healthInfoController = new HealthInfoController(healthInfoServiceMock.Object);
+            healthInfoController = new HealthInfosController(healthInfoServiceMock.Object);
         }
 
         [Fact]
@@ -143,7 +143,7 @@ namespace HospitalTestUnit.Systems.Controllers
                 OwnersJmbg = 1234567890,
                 UpperBloodPreassure = 125,
                 LowerBloodPreassure = 85,
-                SugarLever = 92,
+                SugarLevel = 92,
                 FatPercentage = 21.0,
                 Weight = 71.5,
                 LastMenstruation = new DateTime(1900, 1, 1)
@@ -172,7 +172,7 @@ namespace HospitalTestUnit.Systems.Controllers
                 OwnersJmbg = 1234567890,
                 UpperBloodPreassure = 135,
                 LowerBloodPreassure = 88,
-                SugarLever = 97,
+                SugarLevel = 97,
                 FatPercentage = 23.0,
                 Weight = 73.2,
                 LastMenstruation = new DateTime(1900, 1, 1)
@@ -201,7 +201,7 @@ namespace HospitalTestUnit.Systems.Controllers
                 OwnersJmbg = 1234567890,
                 UpperBloodPreassure = 135,
                 LowerBloodPreassure = 88,
-                SugarLever = 97,
+                SugarLevel = 97,
                 FatPercentage = 23.0,
                 Weight = 73.2,
                 LastMenstruation = new DateTime(1900, 1, 1)
@@ -229,7 +229,7 @@ namespace HospitalTestUnit.Systems.Controllers
                 OwnersJmbg = 1234567890,
                 UpperBloodPreassure = 120,
                 LowerBloodPreassure = 80,
-                SugarLever = 90,
+                SugarLevel = 90,
                 FatPercentage = 20.5,
                 Weight = 70.0,
                 LastMenstruation = new DateTime(1900, 1, 1)

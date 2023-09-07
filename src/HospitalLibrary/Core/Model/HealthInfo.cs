@@ -20,7 +20,7 @@ namespace HospitalLibrary.Core.Model
         [Required]
         public int LowerBloodPreassure { get; set; }
         [Required]
-        public int SugarLever { get; set; }
+        public int SugarLevel { get; set; }
         [Required]
         public double FatPercentage { get; set; }
         [Required]
@@ -34,7 +34,7 @@ namespace HospitalLibrary.Core.Model
             OwnersJmbg = ownersJmbg;
             UpperBloodPreassure = upperBloodPreassure;
             LowerBloodPreassure = lowerBloodPreassure;
-            SugarLever = sugarLevel;
+            SugarLevel = sugarLevel;
             FatPercentage = fatPercentage;
             Weight = weight;
             LastMenstruation = lastMenstruation;
