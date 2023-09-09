@@ -10,6 +10,7 @@ namespace HospitalLibrary.Settings
         public DbSet<User> Users { get; set; }
         public DbSet<HealthInfo> HealthInfos { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
+        public DbSet<HealthReview> HealthReviews { get; set; }
 
 
         public HospitalDbContext(DbContextOptions<HospitalDbContext> options) : base(options) { }
@@ -36,7 +37,7 @@ namespace HospitalLibrary.Settings
                     Jmbg = 1234567890,
                     Gender = Gender.Male,
                     IsBlocked = false,
-                    Guidance = GuidanceTo.None,
+                    Guidance = GuidanceTo.Dermatologist,
                     NumberOfDeclines = 0
                 },
                 new User
@@ -232,6 +233,49 @@ namespace HospitalLibrary.Settings
                     DoctorJmbg = 22222222,
                     PatientJmbg = 0,
                     Date = new DateTime(2023, 11, 8, 10, 45, 0)
+                }
+            );
+
+            modelBuilder.Entity<HealthReview>().HasData(
+                new HealthReview
+                {
+                    Id = 1,
+                    Date = new DateTime(2023, 10, 5),
+                    PatientJmbg = 1234567890,
+                    Diagnosis = "Common Cold",
+                    Cure = "Rest and fluids"
+                },
+                new HealthReview
+                {
+                    Id = 2,
+                    Date = new DateTime(2023, 10, 10),
+                    PatientJmbg = 1234567890,
+                    Diagnosis = "Allergic Reaction",
+                    Cure = "Antihistamines prescribed"
+                },
+                new HealthReview
+                {
+                    Id = 3,
+                    Date = new DateTime(2023, 10, 15),
+                    PatientJmbg = 1234567890,
+                    Diagnosis = "Sprained Ankle",
+                    Cure = "RICE protocol (Rest, Ice, Compression, Elevation)"
+                },
+                new HealthReview
+                {
+                    Id = 4,
+                    Date = new DateTime(2023, 10, 20),
+                    PatientJmbg = 1234567890,
+                    Diagnosis = "Migraine Headache",
+                    Cure = "Pain relievers and rest advised"
+                },
+                new HealthReview
+                {
+                    Id = 5,
+                    Date = new DateTime(2023, 10, 25),
+                    PatientJmbg = 1234567890,
+                    Diagnosis = "Stomachache",
+                    Cure = "Dietary changes recommended"
                 }
             );
 

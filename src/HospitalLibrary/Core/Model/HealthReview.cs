@@ -7,24 +7,27 @@ using System.Threading.Tasks;
 
 namespace HospitalLibrary.Core.Model
 {
-    public class Appointment
+    public class HealthReview
     {
         [Key]
         public int Id { get; set; }
         [Required]
-        public int DoctorJmbg { get; set; }
+        public DateTime Date { get; set; }
         [Required]
         public int PatientJmbg { get; set; }
         [Required]
-        public DateTime Date { get; set; }
+        public string Diagnosis { get; set; }
+        [Required]
+        public string Cure { get; set; }
 
-        public Appointment(int doctorJmbg, int patientJmbg, DateTime date )
+        public HealthReview(DateTime date, int patientJmbg, string diagnosis, string cure)
         {
-            DoctorJmbg = doctorJmbg;
-            PatientJmbg = patientJmbg;
             Date = date;
+            PatientJmbg = patientJmbg;
+            Diagnosis = diagnosis;
+            Cure = cure;
         }
 
-        public Appointment() { }
+        public HealthReview() { }
     }
 }

@@ -57,7 +57,7 @@ namespace HospitalLibrary.Core.Repository
 
         public IEnumerable<User> GetUsersBasedOnGuidance(GuidanceTo guidance)
         {
-            IQueryable<User> query = _context.Users.Where(u => u.Role == UserRole.Role_Medic);
+            IQueryable<User> query = _context.Users;
 
             switch (guidance)
             {
@@ -70,7 +70,6 @@ namespace HospitalLibrary.Core.Repository
                 case GuidanceTo.Psychiatrist:
                     query = query.Where(u => u.Role == UserRole.Role_Medic || u.Role == UserRole.Role_Psychiatrist);
                     break;
-                case GuidanceTo.None:
                 default:
                     break;
             }
