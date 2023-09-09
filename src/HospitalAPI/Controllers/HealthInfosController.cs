@@ -78,7 +78,7 @@ namespace HospitalAPI.Controllers
         }
 
         // DELETE api/healthInfos/2
-        [HttpDelete("id")]
+        [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
             var healthInfo = _healthInfoService.GetById(id);
