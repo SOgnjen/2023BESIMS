@@ -6,13 +6,9 @@ using System.Threading.Tasks;
 
 namespace HospitalLibrary.Core.Model
 {
-    public enum UserRole
+    public enum AppointmentPriority
     {
-        Role_User,
-        Role_Medic,
-        Role_Administrator,
-        Role_Dermatologist,
-        Role_Neurologist,
-        Role_Psychiatrist
+        Medic,
+        Date
     }
 }

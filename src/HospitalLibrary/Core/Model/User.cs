@@ -33,6 +33,8 @@ namespace HospitalLibrary.Core.Model
         public int Jmbg { get; set; }
         [Required]
         public Gender Gender { get; set; }
+        public bool IsBlocked { get; set; }
+        public GuidanceTo Guidance { get; set; }
 
         public User(string emails, string password, string firstName, string lastName, UserRole role, string address, string phoneNumber, int jmbg, Gender gender)
         {
@@ -45,6 +47,8 @@ namespace HospitalLibrary.Core.Model
             PhoneNumber = phoneNumber;
             Jmbg = jmbg;
             Gender = gender;
+            IsBlocked = false;
+            Guidance = GuidanceTo.None;
         }
 
         public User() { }

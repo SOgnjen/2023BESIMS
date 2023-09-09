@@ -6,13 +6,11 @@ using System.Threading.Tasks;
 
 namespace HospitalLibrary.Core.Model
 {
-    public enum UserRole
+    public enum GuidanceTo
     {
-        Role_User,
-        Role_Medic,
-        Role_Administrator,
-        Role_Dermatologist,
-        Role_Neurologist,
-        Role_Psychiatrist
+        None,
+        Dermatologist,
+        Neurologist,
+        Psychiatrist
     }
 }

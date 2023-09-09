@@ -3,15 +3,17 @@ using System;
 using HospitalLibrary.Settings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace HospitalLibrary.Migrations
 {
     [DbContext(typeof(HospitalDbContext))]
-    partial class HospitalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230909092432_AppointmentMigration")]
+    partial class AppointmentMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -248,12 +250,6 @@ namespace HospitalLibrary.Migrations
                     b.Property<int>("Gender")
                         .HasColumnType("integer");
 
-                    b.Property<int>("Guidance")
-                        .HasColumnType("integer");
-
-                    b.Property<bool>("IsBlocked")
-                        .HasColumnType("boolean");
-
                     b.Property<int>("Jmbg")
                         .HasColumnType("integer");
 
@@ -284,8 +280,6 @@ namespace HospitalLibrary.Migrations
                             Emails = "john.doe@example.com",
                             FirstName = "John",
                             Gender = 1,
-                            Guidance = 0,
-                            IsBlocked = false,
                             Jmbg = 1234567890,
                             LastName = "Doe",
                             Password = "password",
@@ -299,8 +293,6 @@ namespace HospitalLibrary.Migrations
                             Emails = "jane.smith@example.com",
                             FirstName = "Jane",
                             Gender = 0,
-                            Guidance = 0,
-                            IsBlocked = false,
                             Jmbg = 987654321,
                             LastName = "Smith",
                             Password = "password",
@@ -314,8 +306,6 @@ namespace HospitalLibrary.Migrations
                             Emails = "bob.johnson@example.com",
                             FirstName = "Bob",
                             Gender = 1,
-                            Guidance = 0,
-                            IsBlocked = false,
                             Jmbg = 11111111,
                             LastName = "Johnson",
                             Password = "password",
@@ -329,8 +319,6 @@ namespace HospitalLibrary.Migrations
                             Emails = "sarah.brown@example.com",
                             FirstName = "Sarah",
                             Gender = 0,
-                            Guidance = 0,
-                            IsBlocked = false,
                             Jmbg = 22222222,
                             LastName = "Brown",
                             Password = "password",
@@ -344,8 +332,6 @@ namespace HospitalLibrary.Migrations
                             Emails = "michael.clark@example.com",
                             FirstName = "Michael",
                             Gender = 1,
-                            Guidance = 0,
-                            IsBlocked = false,
                             Jmbg = 44444444,
                             LastName = "Clark",
                             Password = "password",
@@ -359,8 +345,6 @@ namespace HospitalLibrary.Migrations
                             Emails = "emily.wilson@example.com",
                             FirstName = "Emily",
                             Gender = 0,
-                            Guidance = 0,
-                            IsBlocked = false,
                             Jmbg = 33333333,
                             LastName = "Wilson",
                             Password = "password",
