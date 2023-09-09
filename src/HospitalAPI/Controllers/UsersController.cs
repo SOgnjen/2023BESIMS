@@ -3,6 +3,7 @@ using HospitalLibrary.Core.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 
 namespace HospitalAPI.Controllers
 {
@@ -137,6 +138,27 @@ namespace HospitalAPI.Controllers
             _httpContextAccessor.HttpContext.Session.Remove("SessionId");
 
             return Ok(new { Message = "Logout successful" });
+        }
+
+        // GET api/users/{userId}/guidance-users
+        [HttpGet("{userId}/guidance-users")]
+        public ActionResult GetUsersByGuidanceForUser(int userId)
+        {
+            var user = _userService.GetById(userId);
+
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+
+            var users = _userService.GetUsersBasedOnGuidance(user.Guidance);
+
+            if (users == null || !users.Any())
+            {
+                return NotFound("No users found based on guidance");
+            }
+
+            return Ok(users);
         }
     }
 }

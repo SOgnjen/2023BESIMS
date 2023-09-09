@@ -42,6 +42,11 @@ namespace HospitalLibrary.Core.Service
             return _userRepository.GetById(id);
         }
 
+        public IEnumerable<User> GetUsersBasedOnGuidance(GuidanceTo guidance)
+        {
+            return _userRepository.GetUsersBasedOnGuidance(guidance);
+        }
+
         public void Update(User user)
         {
             _userRepository.Update(user);

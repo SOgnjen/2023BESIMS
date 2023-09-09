@@ -15,5 +15,6 @@ namespace HospitalLibrary.Core.Service
         void Update(User user);
         void Delete(User user);
         User FindRequiredLoginUser(string email, string password);
+        IEnumerable<User> GetUsersBasedOnGuidance(GuidanceTo guidance);
     }
 }

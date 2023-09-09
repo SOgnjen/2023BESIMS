@@ -55,6 +55,29 @@ namespace HospitalLibrary.Core.Repository
             return _context.Users.FirstOrDefault(u => u.Jmbg == jmbg);
         }
 
+        public IEnumerable<User> GetUsersBasedOnGuidance(GuidanceTo guidance)
+        {
+            IQueryable<User> query = _context.Users.Where(u => u.Role == UserRole.Role_Medic);
+
+            switch (guidance)
+            {
+                case GuidanceTo.Dermatologist:
+                    query = query.Where(u => u.Role == UserRole.Role_Medic || u.Role == UserRole.Role_Dermatologist);
+                    break;
+                case GuidanceTo.Neurologist:
+                    query = query.Where(u => u.Role == UserRole.Role_Medic || u.Role == UserRole.Role_Neurologist);
+                    break;
+                case GuidanceTo.Psychiatrist:
+                    query = query.Where(u => u.Role == UserRole.Role_Medic || u.Role == UserRole.Role_Psychiatrist);
+                    break;
+                case GuidanceTo.None:
+                default:
+                    break;
+            }
+
+            return query.ToList();
+        }
+
         public void Update(User user)
         {
             _context.Entry(user).State = EntityState.Modified;
@@ -68,5 +91,7 @@ namespace HospitalLibrary.Core.Repository
                 throw;
             }
         }
+
+
     }
 }

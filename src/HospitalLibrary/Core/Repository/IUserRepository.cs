@@ -17,5 +17,6 @@ namespace HospitalLibrary.Core.Repository
         User FindUserByEmailAndPassword(string email, string password);
         IEnumerable<User> GetAllUsersWithSameRole(UserRole role);
         User GetByJmbg(int jmbg);
+        IEnumerable<User> GetUsersBasedOnGuidance(GuidanceTo guidance);
     }
 }
