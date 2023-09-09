@@ -11,6 +11,7 @@ namespace HospitalLibrary.Settings
         public DbSet<HealthInfo> HealthInfos { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<HealthReview> HealthReviews { get; set; }
+        public DbSet<Blog> Blogs { get; set; }
 
 
         public HospitalDbContext(DbContextOptions<HospitalDbContext> options) : base(options) { }
@@ -278,6 +279,43 @@ namespace HospitalLibrary.Settings
                     Cure = "Dietary changes recommended"
                 }
             );
+
+            modelBuilder.Entity<Blog>().HasData(
+                new Blog
+                {
+                    Id = 1,
+                    WriterJmbg = 987654321,
+                    Title = "The Importance of Regular Check-ups",
+                    Text = "Regular check-ups are essential for maintaining good health. They help detect health issues early and prevent complications. Make sure to schedule your check-up today!"
+                },
+                new Blog
+                {
+                    Id = 2,
+                    WriterJmbg = 22222222,
+                    Title = "Tips for Healthy Skin",
+                    Text = "Healthy skin is a reflection of overall well-being. In this blog, we'll share tips for maintaining healthy and radiant skin. Remember to stay hydrated and protect your skin from the sun!"
+                },
+                new Blog
+                {
+                    Id = 3,
+                    WriterJmbg = 33333333,
+                    Title = "Understanding Stress and Coping Strategies",
+                    Text = "Stress is a common issue in today's fast-paced world. In this blog, we'll delve into the causes of stress and provide effective coping strategies. Remember, it's essential to prioritize your mental health."
+                },
+                new Blog
+                {
+                    Id = 4,
+                    WriterJmbg = 44444444,
+                    Title = "The Brain-Boosting Benefits of Exercise",
+                    Text = "Exercise not only benefits your body but also your brain. Learn how physical activity can boost cognitive function, improve memory, and reduce the risk of neurological conditions. Get moving for a healthier brain!"
+                },
+                new Blog
+                {
+                    Id = 5,
+                    WriterJmbg = 987654321,
+                    Title = "Nutrition and Its Impact on Overall Health",
+                    Text = "Proper nutrition is the cornerstone of good health. This blog explores the importance of a balanced diet, the role of nutrients, and how dietary choices can affect your overall well-being."
+                });
 
             base.OnModelCreating(modelBuilder);
         }
