@@ -162,5 +162,117 @@ namespace HospitalTestUnit.Systems.Services
             // Assert
             appointmentRepositoryMock.Verify(repo => repo.Delete(appointmentToDelete), Times.Once);
         }
+
+        [Fact]
+        public void FindMeAppointment_ReturnsAppointmentWithIdealPriority()
+        {
+            // Arrange
+            int doctorJmbgToFind = 987654321;
+            DateTime dateToFind = new DateTime(2023, 10, 15, 10, 0, 0);
+            int priority = 1;
+
+            var idealAppointment = new Appointment
+            {
+                Id = 1,
+                DoctorJmbg = doctorJmbgToFind,
+                PatientJmbg = 1234567890,
+                Date = dateToFind
+            };
+
+            appointmentRepositoryMock.Setup(repo =>
+                repo.FindMeAppointment(doctorJmbgToFind, dateToFind, priority))
+                .Returns(idealAppointment);
+
+            // Act
+            var result = appointmentService.FindMeAppointment(doctorJmbgToFind, dateToFind, priority);
+
+            // Assert
+            result.Should().NotBeNull();
+            result.Should().BeEquivalentTo(idealAppointment);
+        }
+
+        [Fact]
+        public void FindMeAppointment_ReturnsAppointmentWithDoctorPriority()
+        {
+            // Arrange
+            int doctorJmbgToFind = 987654321;
+            DateTime dateToFind = new DateTime(2023, 10, 18, 14, 30, 0);
+            int priority = 1;
+
+            var doctorPriorityAppointment = new Appointment
+            {
+                Id = 2,
+                DoctorJmbg = doctorJmbgToFind,
+                PatientJmbg = 1234567890,
+                Date = new DateTime(2023, 10, 21, 14, 30, 0)
+            };
+
+            appointmentRepositoryMock.Setup(repo =>
+                repo.FindMeAppointment(doctorJmbgToFind, dateToFind, priority))
+                .Returns(doctorPriorityAppointment);
+
+            // Act
+            var result = appointmentService.FindMeAppointment(doctorJmbgToFind, dateToFind, priority);
+
+            // Assert
+            result.Should().NotBeNull();
+            result.Should().BeEquivalentTo(doctorPriorityAppointment);
+        }
+
+        [Fact]
+        public void ReserveAppointment_ReservationSuccess()
+        {
+            // Arrange
+            var appointmentToReserve = new Appointment
+            {
+                Id = 1,
+                DoctorJmbg = 987654321,
+                PatientJmbg = 0,
+                Date = new DateTime(2023, 11, 10, 14, 30, 0)
+            };
+
+            var userJmbg = 1111111111;
+
+            appointmentRepositoryMock.Setup(repo => repo.ReserveAppointment(appointmentToReserve, userJmbg))
+                .Callback((Appointment appointment, int patientJmbg) =>
+                {
+                    appointment.PatientJmbg = patientJmbg;
+                });
+
+            // Act
+            appointmentService.ReserveAppointment(appointmentToReserve, userJmbg);
+
+            // Assert
+            appointmentToReserve.PatientJmbg.Should().Be(userJmbg);
+            appointmentRepositoryMock.Verify(repo => repo.ReserveAppointment(appointmentToReserve, userJmbg), Times.Once);
+        }
+
+        [Fact]
+        public void DeclineAppointment_DecliningSuccess()
+        {
+            // Arrange
+            var appointmentToDecline = new Appointment
+            {
+                Id = 1,
+                DoctorJmbg = 987654321,
+                PatientJmbg = 1234567890,
+                Date = new DateTime(2023, 10, 15, 10, 0, 0)
+            };
+
+            appointmentRepositoryMock.Setup(repo => repo.DeclineAppointment(appointmentToDecline))
+                .Callback((Appointment appointment) =>
+                {
+                    appointment.PatientJmbg = 0;
+                });
+
+            // Act
+            appointmentService.DeclineAppointment(appointmentToDecline);
+
+            // Assert
+            appointmentToDecline.PatientJmbg.Should().Be(0);
+            appointmentRepositoryMock.Verify(repo => repo.DeclineAppointment(appointmentToDecline), Times.Once);
+        }
+
+
     }
 }

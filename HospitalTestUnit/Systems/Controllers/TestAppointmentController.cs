@@ -224,5 +224,60 @@ namespace HospitalTestUnit.Systems.Controllers
             result.StatusCode.Should().Be(404);
         }
 
+        [Fact]
+        public void ReserveAppointment_ReturnsOkResultForValidReservation()
+        {
+            // Arrange
+            var appointmentIdToReserve = 1;
+            var userJmbg = 1111111111;
+
+            var appointmentToReserve = new Appointment
+            {
+                Id = appointmentIdToReserve,
+                DoctorJmbg = 987654321,
+                PatientJmbg = 0,
+                Date = new DateTime(2023, 10, 15, 10, 0, 0)
+            };
+
+            appointmentServiceMock.Setup(service => service.GetById(appointmentIdToReserve)).Returns(appointmentToReserve);
+
+            // Act
+            var result = appointmentController.ReserveAppointment(appointmentIdToReserve, new AppointmentsController.ReserveAppointmentRequest { UserJmbg = userJmbg }) as OkObjectResult;
+
+            // Assert
+            result.Should().NotBeNull();
+            result.StatusCode.Should().Be(200);
+            result.Value.Should().Be("Appointment reserved successfully.");
+        }
+
+
+        [Fact]
+        public void DeclineAppointment_ReturnsOkResultForValidDecline()
+        {
+            // Arrange
+            var appointmentIdToDecline = 1;
+
+            var appointmentToDecline = new Appointment
+            {
+                Id = appointmentIdToDecline,
+                DoctorJmbg = 987654321,
+                PatientJmbg = 1111111111, // Reserved by the user
+                Date = new DateTime(2023, 10, 15, 10, 0, 0)
+            };
+
+            appointmentServiceMock.Setup(service => service.GetById(appointmentIdToDecline)).Returns(appointmentToDecline);
+
+            // Act
+            var result = appointmentController.DeclineAppointment(appointmentIdToDecline) as OkObjectResult;
+
+            // Assert
+            result.Should().NotBeNull();
+            result.StatusCode.Should().Be(200);
+            result.Value.Should().Be("Appointment declined successfully.");
+        }
+
+       
+
+
     }
 }

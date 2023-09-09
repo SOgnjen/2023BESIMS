@@ -41,5 +41,25 @@ namespace HospitalLibrary.Core.Service
         {
             _appointmentReposiotry.Update(appointment);
         }
+
+        public Appointment FindMeAppointment(int doctorsJmbg, DateTime date, int priority)
+        {
+            Appointment appointment = null;
+
+            appointment = _appointmentReposiotry.FindMeAppointment(doctorsJmbg, date, priority);
+
+
+            return appointment;
+        }
+
+        public void ReserveAppointment(Appointment appointment, int userJmbg)
+        {
+            _appointmentReposiotry.ReserveAppointment(appointment, userJmbg);
+        }
+
+        public void DeclineAppointment(Appointment appointment)
+        {
+            _appointmentReposiotry.DeclineAppointment(appointment);
+        }
     }
 }

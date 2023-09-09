@@ -89,5 +89,84 @@ namespace HospitalAPI.Controllers
             _appointmentService.Delete(appointment);
             return NoContent();
         }
+
+        // POST api/appointments/find
+        [HttpPost("find")]
+        public ActionResult FindAppointment([FromBody] FindAppointmentRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var appointment = _appointmentService.FindMeAppointment(request.DoctorJmbg, request.Date, request.Priority);
+            if (appointment == null)
+            {
+                return NotFound("Appointment not found.");
+            }
+
+            return Ok(appointment);
+        }
+
+
+        public class FindAppointmentRequest
+        {
+            public int DoctorJmbg { get; set; }
+            public DateTime Date { get; set; }
+            public int Priority { get; set; }
+        }
+
+        // POST api/appointments/reserve/2
+        [HttpPost("reserve/{id}")]
+        public ActionResult ReserveAppointment(int id, [FromBody] ReserveAppointmentRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var appointment = _appointmentService.GetById(id);
+            if (appointment == null)
+            {
+                return NotFound("Appointment not found.");
+            }
+
+            try
+            {
+                _appointmentService.ReserveAppointment(appointment, request.UserJmbg);
+                return Ok("Appointment reserved successfully.");
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // POST api/appointments/decline/2
+        [HttpPost("decline/{id}")]
+        public ActionResult DeclineAppointment(int id)
+        {
+            var appointment = _appointmentService.GetById(id);
+            if (appointment == null)
+            {
+                return NotFound("Appointment not found.");
+            }
+
+            try
+            {
+                _appointmentService.DeclineAppointment(appointment);
+                return Ok("Appointment declined successfully.");
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        public class ReserveAppointmentRequest
+        {
+            public int UserJmbg { get; set; }
+        }
+
     }
 }

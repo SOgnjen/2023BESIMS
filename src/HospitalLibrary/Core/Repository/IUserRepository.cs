@@ -15,5 +15,7 @@ namespace HospitalLibrary.Core.Repository
         void Update(User user);
         void Delete(User user);
         User FindUserByEmailAndPassword(string email, string password);
+        IEnumerable<User> GetAllUsersWithSameRole(UserRole role);
+        User GetByJmbg(int jmbg);
     }
 }

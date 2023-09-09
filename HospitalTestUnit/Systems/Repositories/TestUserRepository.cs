@@ -314,6 +314,77 @@ namespace HospitalTestUnit.Systems.Repositories
             result.Should().BeNull();
         }
 
+        [Fact]
+        public void GetAllUsersWithSameRole_ReturnsMatchingUsers()
+        {
+            // Arrange
+            dbContext = CreateDbContext();
+            var userRepository = new UserRepository(dbContext);
+
+            var roleToFind = UserRole.Role_User;
+            var matchingUsers = users.Where(u => u.Role == roleToFind).ToList();
+            dbContext.Users.AddRange(users);
+            dbContext.SaveChanges();
+
+            // Act
+            var result = userRepository.GetAllUsersWithSameRole(roleToFind);
+
+            // Assert
+            result.Should().NotBeNull();
+            result.Should().BeEquivalentTo(matchingUsers);
+        }
+
+        [Fact]
+        public void GetByJmbg_ReturnsUserWithMatchingJmbg()
+        {
+            // Arrange
+            dbContext = CreateDbContext();
+            var userRepository = new UserRepository(dbContext);
+
+            var jmbgToFind = 1234567890;
+            var userToReturn = new User
+            {
+                Id = 1,
+                FirstName = "John",
+                LastName = "Doe",
+                Emails = "john.doe@example.com",
+                Password = "password",
+                Role = UserRole.Role_User,
+                Address = "123 Main St",
+                PhoneNumber = "555-1234",
+                Jmbg = jmbgToFind, // JMBG matches
+                Gender = Gender.Male
+            };
+
+            dbContext.Users.Add(userToReturn);
+            dbContext.SaveChanges();
+
+            // Act
+            var result = userRepository.GetByJmbg(jmbgToFind);
+
+            // Assert
+            result.Should().NotBeNull();
+            result.Should().BeEquivalentTo(userToReturn);
+        }
+
+        [Fact]
+        public void GetByJmbg_ReturnsNullForNonExistentJmbg()
+        {
+            // Arrange
+            dbContext = CreateDbContext();
+            var userRepository = new UserRepository(dbContext);
+
+            var jmbgToFind = 999999999; // Non-existent JMBG
+
+            // Act
+            var result = userRepository.GetByJmbg(jmbgToFind);
+
+            // Assert
+            result.Should().BeNull();
+        }
+
+        
+
 
     }
 }

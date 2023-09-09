@@ -40,9 +40,19 @@ namespace HospitalLibrary.Core.Repository
             return _context.Users.ToList();
         }
 
+        public IEnumerable<User> GetAllUsersWithSameRole(UserRole role)
+        {
+            return _context.Users.Where(u => u.Role == role).ToList();
+        }
+
         public User GetById(int id)
         {
             return _context.Users.Find(id);
+        }
+
+        public User GetByJmbg(int jmbg)
+        {
+            return _context.Users.FirstOrDefault(u => u.Jmbg == jmbg);
         }
 
         public void Update(User user)

@@ -26,13 +26,13 @@ namespace HospitalTestUnit.Systems.Repositories
                     Id = 1,
                     DoctorJmbg = 987654321,
                     PatientJmbg = 1234567890,
-                    Date = new DateTime(2023, 10, 15, 10, 0, 0)
+                    Date = new DateTime(2023, 9, 9, 10, 0, 0)
                 },
                 new Appointment
                 {
                     Id = 2,
                     DoctorJmbg = 987654321,
-                    PatientJmbg = 1234567890,
+                    PatientJmbg = 0,
                     Date = new DateTime(2023, 10, 18, 14, 30, 0)
                 },
                 new Appointment
@@ -41,6 +41,13 @@ namespace HospitalTestUnit.Systems.Repositories
                     DoctorJmbg = 987654321,
                     PatientJmbg = 1234567890,
                     Date = new DateTime(2023, 10, 20, 9, 15, 0)
+                },
+                new Appointment
+                {
+                    Id = 4,
+                    DoctorJmbg = 987654321,
+                    PatientJmbg = 0,
+                    Date = new DateTime(2023, 10, 15, 10, 0, 0)
                 }
             };
         }
@@ -217,5 +224,234 @@ namespace HospitalTestUnit.Systems.Repositories
             // Assert
             deletedAppointment.Should().BeNull();
         }
+
+        [Fact]
+        public void FindAppointment_ShouldReturnMatchingAppointment()
+        {
+            // Arrange
+            dbContext = CreateDbContext();
+            dbContext.Appointments.AddRange(appointments);
+            dbContext.SaveChanges();
+            var appointmentRepository = new AppointmentRepository(dbContext);
+
+            int doctorJmbgToFind = 987654321;
+            DateTime dateToFind = new DateTime(2023, 10, 15, 10, 0, 0);
+
+            // Act
+            var result = appointmentRepository.FindIdealAppointment(doctorJmbgToFind, dateToFind);
+
+            // Assert
+            result.Should().NotBeNull();
+            result.DoctorJmbg.Should().Be(doctorJmbgToFind);
+            result.Date.Should().Be(dateToFind);
+        }
+
+        [Fact]
+        public void FindAppointment_ShouldReturnNullForNonExistentAppointment()
+        {
+            // Arrange
+            dbContext = CreateDbContext();
+            dbContext.Appointments.AddRange(appointments);
+            dbContext.SaveChanges();
+            var appointmentRepository = new AppointmentRepository(dbContext);
+
+            int doctorJmbgToFind = 123456789;
+            DateTime dateToFind = new DateTime(2023, 10, 15, 10, 0, 0);
+
+            // Act
+            var result = appointmentRepository.FindIdealAppointment(doctorJmbgToFind, dateToFind);
+
+            // Assert
+            result.Should().BeNull();
+        }
+
+        [Fact]
+        public void FindAppointmentDoctorPriority_ReturnsMatchingAppointmentInDateRange()
+        {
+            // Arrange
+            dbContext = CreateDbContext();
+            var appointmentRepository = new AppointmentRepository(dbContext);
+
+            var doctorJmbg = 987654321;
+            var targetDate = new DateTime(2023, 10, 18, 14, 30, 0);
+            var matchingAppointment = new Appointment
+            {
+                DoctorJmbg = doctorJmbg,
+                PatientJmbg = 0,
+                Date = targetDate.AddDays(3) // This appointment is within the date range
+            };
+            var nonMatchingAppointment = new Appointment
+            {
+                DoctorJmbg = doctorJmbg,
+                PatientJmbg = 0,
+                Date = targetDate.AddDays(10) // This appointment is outside the date range
+            };
+
+            dbContext.Appointments.AddRange(matchingAppointment, nonMatchingAppointment);
+            dbContext.SaveChanges();
+
+            // Act
+            var result = appointmentRepository.FindAppointmentDoctorPriority(doctorJmbg, targetDate);
+
+            // Assert
+            result.Should().NotBeNull();
+            result.Should().BeEquivalentTo(matchingAppointment);
+        }
+
+        [Fact]
+        public void FindAppointmentDoctorPriority_ReturnsNullWhenNoMatchingAppointment()
+        {
+            // Arrange
+            dbContext = CreateDbContext();
+            var appointmentRepository = new AppointmentRepository(dbContext);
+
+            var doctorJmbg = 987654321;
+            var targetDate = new DateTime(2023, 10, 18, 14, 30, 0);
+            var nonMatchingAppointment = new Appointment
+            {
+                DoctorJmbg = doctorJmbg,
+                PatientJmbg = 0,
+                Date = targetDate.AddDays(10)
+            };
+
+            dbContext.Appointments.Add(nonMatchingAppointment);
+            dbContext.SaveChanges();
+
+            // Act
+            var result = appointmentRepository.FindAppointmentDoctorPriority(doctorJmbg, targetDate);
+
+            // Assert
+            result.Should().BeNull();
+        }
+
+        [Fact]
+        public void FindAppointmentDatePriority_ReturnsNullForNonExistentDoctor()
+        {
+            // Arrange
+            dbContext = CreateDbContext();
+            dbContext.Appointments.AddRange(appointments);
+            dbContext.SaveChanges();
+            var appointmentRepository = new AppointmentRepository(dbContext);
+
+            int doctorJmbgToFind = 123456789;
+            DateTime dateToFind = new DateTime(2023, 10, 15, 10, 0, 0);
+
+            // Act
+            var result = appointmentRepository.FindAppointmentDatePriority(doctorJmbgToFind, dateToFind);
+
+            // Assert
+            result.Should().BeNull();
+        }
+
+        [Fact]
+        public void FindMeAppointment_ShouldReturnIdealAppointment()
+        {
+            // Arrange
+            dbContext = CreateDbContext();
+            dbContext.Appointments.AddRange(appointments);
+            dbContext.SaveChanges();
+            var appointmentRepository = new AppointmentRepository(dbContext);
+
+            int doctorJmbgToFind = 987654321;
+            DateTime dateToFind = new DateTime(2023, 10, 15, 10, 0, 0);
+
+            // Act
+            var result = appointmentRepository.FindMeAppointment(doctorJmbgToFind, dateToFind, 1);
+
+            // Assert
+            result.Should().NotBeNull();
+            result.DoctorJmbg.Should().Be(doctorJmbgToFind);
+            result.Date.Should().Be(dateToFind);
+        }
+
+        [Fact]
+        public void FindMeAppointment_ShouldReturnDoctorPriorityAppointment()
+        {
+            // Arrange
+            dbContext = CreateDbContext();
+            dbContext.Appointments.AddRange(appointments);
+            dbContext.SaveChanges();
+            var appointmentRepository = new AppointmentRepository(dbContext);
+
+            int doctorJmbgToFind = 987654321;
+            DateTime dateToFind = new DateTime(2023, 10, 8, 14, 30, 0);
+
+            // Act
+            var result = appointmentRepository.FindMeAppointment(doctorJmbgToFind, dateToFind, 1);
+
+            // Assert
+            result.Should().NotBeNull();
+            result.DoctorJmbg.Should().Be(doctorJmbgToFind);
+            result.Date.Should().Be(new DateTime(2023, 10, 15, 10, 0, 0));
+        }
+
+        [Fact]
+        public void ReserveAppointment_ReservesAvailableAppointmentWithWholeAppointmentObject()
+        {
+            // Arrange
+            dbContext = CreateDbContext();
+            var appointmentRepository = new AppointmentRepository(dbContext);
+
+            var appointmentToReserve = new Appointment
+            {
+                DoctorJmbg = 987654321,
+                PatientJmbg = 0,
+                Date = new DateTime(2023, 11, 10, 14, 30, 0)
+            };
+
+            dbContext.Appointments.Add(appointmentToReserve);
+            dbContext.SaveChanges();
+
+            int userJmbg = 1111111111;
+
+            // Act
+            appointmentRepository.ReserveAppointment(appointmentToReserve, userJmbg);
+
+            // Assert
+            var reservedAppointment = dbContext.Appointments.FirstOrDefault(a => a.Id == appointmentToReserve.Id);
+            reservedAppointment.Should().NotBeNull();
+            reservedAppointment.PatientJmbg.Should().Be(userJmbg);
+        }
+
+        [Fact]
+        public void DeclineAppointment_ShouldSetPatientJmbgToZeroForFutureAppointment()
+        {
+            // Arrange
+            dbContext = CreateDbContext();
+            dbContext.Appointments.AddRange(appointments);
+            dbContext.SaveChanges();
+            var appointmentRepository = new AppointmentRepository(dbContext);
+
+            int appointmentIdToDecline = 2;
+
+            // Act
+            var appointmentToDecline = dbContext.Appointments.FirstOrDefault(a => a.Id == appointmentIdToDecline);
+            appointmentRepository.DeclineAppointment(appointmentToDecline);
+
+            // Assert
+            var declinedAppointment = dbContext.Appointments.FirstOrDefault(a => a.Id == appointmentIdToDecline);
+            declinedAppointment.Should().NotBeNull();
+            declinedAppointment.PatientJmbg.Should().Be(0);
+        }
+
+        [Fact]
+        public void DeclineAppointment_ShouldThrowExceptionForPastAppointment()
+        {
+            // Arrange
+            dbContext = CreateDbContext();
+            dbContext.Appointments.AddRange(appointments);
+            dbContext.SaveChanges();
+            var appointmentRepository = new AppointmentRepository(dbContext);
+
+            int appointmentIdToDecline = 1;
+
+            // Act & Assert
+            var appointmentToDecline = dbContext.Appointments.FirstOrDefault(a => a.Id == appointmentIdToDecline);
+            Action act = () => appointmentRepository.DeclineAppointment(appointmentToDecline);
+
+            // Assert
+            act.Should().Throw<InvalidOperationException>().WithMessage("Cannot decline appointment that is less than 2 days away.");
+        }
+
     }
 }

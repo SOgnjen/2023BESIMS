@@ -14,5 +14,11 @@ namespace HospitalLibrary.Core.Repository
         void Create(Appointment appointment);
         void Update(Appointment appointment);
         void Delete(Appointment appointment);
+        Appointment FindIdealAppointment(int doctorsJmbg, DateTime date);
+        Appointment FindAppointmentDoctorPriority(int doctorsJmbg, DateTime date);
+        Appointment FindAppointmentDatePriority(int doctorsJmbg, DateTime date);
+        Appointment FindMeAppointment(int doctorsJmbg, DateTime date, int priority);
+        void ReserveAppointment(Appointment appointment, int userJmbg);
+        void DeclineAppointment(Appointment appointment);
     }
 }
