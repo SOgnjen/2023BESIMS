@@ -36,7 +36,8 @@ namespace HospitalLibrary.Settings
                     Jmbg = 1234567890,
                     Gender = Gender.Male,
                     IsBlocked = false,
-                    Guidance = GuidanceTo.None
+                    Guidance = GuidanceTo.None,
+                    NumberOfDeclines = 0
                 },
                 new User
                 {
@@ -51,7 +52,8 @@ namespace HospitalLibrary.Settings
                     Jmbg = 987654321,
                     Gender = Gender.Female,
                     IsBlocked = false,
-                    Guidance = GuidanceTo.None
+                    Guidance = GuidanceTo.None,
+                    NumberOfDeclines = 0
                 },
                 new User
                 {
@@ -66,7 +68,8 @@ namespace HospitalLibrary.Settings
                     Jmbg = 11111111,
                     Gender = Gender.Male,
                     IsBlocked = false,
-                    Guidance = GuidanceTo.None
+                    Guidance = GuidanceTo.None,
+                    NumberOfDeclines = 0
                 },
                 new User
                 {
@@ -81,7 +84,8 @@ namespace HospitalLibrary.Settings
                     Jmbg = 22222222,
                     Gender = Gender.Female,
                     IsBlocked = false,
-                    Guidance = GuidanceTo.None
+                    Guidance = GuidanceTo.None,
+                    NumberOfDeclines = 0
                 },
                 new User
                 {
@@ -96,7 +100,8 @@ namespace HospitalLibrary.Settings
                     Jmbg = 44444444,
                     Gender = Gender.Male,
                     IsBlocked = false,
-                    Guidance = GuidanceTo.None
+                    Guidance = GuidanceTo.None,
+                    NumberOfDeclines = 0
                 },
                 new User
                 {
@@ -111,7 +116,8 @@ namespace HospitalLibrary.Settings
                     Jmbg = 33333333,
                     Gender = Gender.Female,
                     IsBlocked = false,
-                    Guidance = GuidanceTo.None
+                    Guidance = GuidanceTo.None,
+                    NumberOfDeclines = 0
                 }
             );
 

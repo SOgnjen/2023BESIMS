@@ -242,7 +242,7 @@ namespace HospitalTestUnit.Systems.Controllers
             appointmentServiceMock.Setup(service => service.GetById(appointmentIdToReserve)).Returns(appointmentToReserve);
 
             // Act
-            var result = appointmentController.ReserveAppointment(appointmentIdToReserve, new AppointmentsController.ReserveAppointmentRequest { UserJmbg = userJmbg }) as OkObjectResult;
+            var result = appointmentController.ReserveAppointment(appointmentIdToReserve, new AppointmentsController.ReserveAppointmentRequest { PatientJmbg = userJmbg }) as OkObjectResult;
 
             // Assert
             result.Should().NotBeNull();
@@ -276,7 +276,42 @@ namespace HospitalTestUnit.Systems.Controllers
             result.Value.Should().Be("Appointment declined successfully.");
         }
 
-       
+        [Fact]
+        public void FindAppointment_ReturnsAppointmentWithId1()
+        {
+            // Arrange
+            var doctorJmbg = 987654321;
+            var date = new DateTime(2023, 10, 15, 10, 0, 0);
+            var priority = 1;
+
+            // Create the appointment you expect to be returned
+            var expectedAppointment = new Appointment
+            {
+                Id = 1,
+                DoctorJmbg = doctorJmbg,
+                PatientJmbg = 1234567890,
+                Date = date
+            };
+
+            // Set up the mock for FindMeAppointment to return the expected appointment
+            appointmentServiceMock.Setup(service =>
+                service.FindMeAppointment(doctorJmbg, date, priority))
+                .Returns(expectedAppointment);
+
+            // Act
+            var result = appointmentController.FindAppointment(new AppointmentsController.FindAppointmentRequest
+            {
+                DoctorJmbg = doctorJmbg,
+                Date = date,
+                Priority = priority
+            }) as OkObjectResult;
+
+            // Assert
+            result.Should().NotBeNull();
+            result.StatusCode.Should().Be(200);
+            result.Value.Should().BeOfType<Appointment>();
+            result.Value.Should().BeEquivalentTo(expectedAppointment);
+        }
 
 
     }

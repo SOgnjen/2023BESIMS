@@ -3,6 +3,8 @@ using HospitalLibrary.Core.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 
 namespace HospitalAPI.Controllers
 {
@@ -99,22 +101,30 @@ namespace HospitalAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var appointment = _appointmentService.FindMeAppointment(request.DoctorJmbg, request.Date, request.Priority);
-            if (appointment == null)
+            try
             {
-                return NotFound("Appointment not found.");
+                var appointment = _appointmentService.FindMeAppointment(request.DoctorJmbg, request.Date, request.Priority);
+                if (appointment == null)
+                {
+                    return NotFound("Appointment not found.");
+                }
+
+                return Ok(appointment);
             }
-
-            return Ok(appointment);
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
-
 
         public class FindAppointmentRequest
         {
             public int DoctorJmbg { get; set; }
+            [DataType(DataType.Date)]
             public DateTime Date { get; set; }
             public int Priority { get; set; }
         }
+
 
         // POST api/appointments/reserve/2
         [HttpPost("reserve/{id}")]
@@ -133,7 +143,7 @@ namespace HospitalAPI.Controllers
 
             try
             {
-                _appointmentService.ReserveAppointment(appointment, request.UserJmbg);
+                _appointmentService.ReserveAppointment(appointment, request.PatientJmbg);
                 return Ok("Appointment reserved successfully.");
             }
             catch (InvalidOperationException ex)
@@ -165,7 +175,7 @@ namespace HospitalAPI.Controllers
 
         public class ReserveAppointmentRequest
         {
-            public int UserJmbg { get; set; }
+            public int PatientJmbg { get; set; }
         }
 
     }

@@ -35,6 +35,7 @@ namespace HospitalLibrary.Core.Model
         public Gender Gender { get; set; }
         public bool IsBlocked { get; set; }
         public GuidanceTo Guidance { get; set; }
+        public int NumberOfDeclines { get; set; }
 
         public User(string emails, string password, string firstName, string lastName, UserRole role, string address, string phoneNumber, int jmbg, Gender gender)
         {
@@ -49,6 +50,7 @@ namespace HospitalLibrary.Core.Model
             Gender = gender;
             IsBlocked = false;
             Guidance = GuidanceTo.None;
+            NumberOfDeclines = 0;
         }
 
         public User() { }
