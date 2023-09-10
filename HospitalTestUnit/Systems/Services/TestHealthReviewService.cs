@@ -168,5 +168,40 @@ namespace HospitalTestUnit.Systems.Services
             // Assert
             healthReviewRepositoryMock.Verify(repo => repo.Delete(healthReviewToDelete), Times.Once);
         }
+
+        [Fact]
+        public void GetByPatientJmbg_ReturnsHealthReviewsWithMatchingPatientJmbg()
+        {
+            // Arrange
+            var targetPatientJmbg = 1234567890;
+            var healthReviewsForPatient = healthReviews.Where(hr => hr.PatientJmbg == targetPatientJmbg).ToList();
+            healthReviewRepositoryMock.Setup(repo => repo.GetAllOfPatient(targetPatientJmbg)).Returns(healthReviewsForPatient);
+
+            // Act
+            var result = healthReviewService.GetAllOfPatient(targetPatientJmbg);
+
+            // Assert
+            result.Should().NotBeNull();
+            result.Should().NotBeEmpty();
+            result.Should().BeEquivalentTo(healthReviewsForPatient);
+        }
+
+        [Fact]
+        public void GetByPatientJmbg_ReturnsEmptyListWhenNoMatchingHealthReviewsExist()
+        {
+            // Arrange
+            var targetPatientJmbg = 999999999;
+            healthReviewRepositoryMock.Setup(repo => repo.GetAllOfPatient(targetPatientJmbg)).Returns(new List<HealthReview>());
+
+            // Act
+            var result = healthReviewService.GetAllOfPatient(targetPatientJmbg);
+
+            // Assert
+            result.Should().NotBeNull();
+            result.Should().BeEmpty();
+        }
+
+
+
     }
 }

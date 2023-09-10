@@ -166,5 +166,12 @@ namespace HospitalLibrary.Core.Repository
 
             return timeUntilAppointment >= threshold;
         }
+
+        public IEnumerable<Appointment> GetAllOfPatient(int patientsJmbg)
+        {
+            return _context.Appointments
+                .Where(h => h.PatientJmbg == patientsJmbg)
+                .ToList();
+        }
     }
 }

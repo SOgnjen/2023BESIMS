@@ -32,6 +32,11 @@ namespace HospitalLibrary.Core.Service
             return _healthReviewRepository.GetAll();
         }
 
+        public IEnumerable<HealthReview> GetAllOfPatient(int patientsJmbg)
+        {
+            return _healthReviewRepository.GetAllOfPatient(patientsJmbg);
+        }
+
         public HealthReview GetById(int id)
         {
             return _healthReviewRepository.GetById(id);

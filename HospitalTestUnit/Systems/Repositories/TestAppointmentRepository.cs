@@ -453,5 +453,44 @@ namespace HospitalTestUnit.Systems.Repositories
             act.Should().Throw<InvalidOperationException>().WithMessage("Cannot decline appointment that is less than 2 days away.");
         }
 
+        [Fact]
+        public void GetAllOfPatient_ReturnsAppointmentsForMatchingPatient()
+        {
+            // Arrange
+            dbContext = CreateDbContext();
+            dbContext.Appointments.AddRange(appointments);
+            dbContext.SaveChanges();
+            var appointmentRepository = new AppointmentRepository(dbContext);
+
+            var targetPatientJmbg = 1234567890;
+            var appointmentsWithMatchingPatient = appointments.Where(a => a.PatientJmbg == targetPatientJmbg).ToList();
+
+            // Act
+            var result = appointmentRepository.GetAllOfPatient(targetPatientJmbg);
+
+            // Assert
+            result.Should().NotBeNull();
+            result.Should().BeEquivalentTo(appointmentsWithMatchingPatient);
+        }
+
+        [Fact]
+        public void GetAllOfPatient_ReturnsEmptyListForInvalidPatient()
+        {
+            // Arrange
+            dbContext = CreateDbContext();
+            dbContext.Appointments.AddRange(appointments);
+            dbContext.SaveChanges();
+            var appointmentRepository = new AppointmentRepository(dbContext);
+
+            var invalidPatientJmbg = 999999999;
+
+            // Act
+            var result = appointmentRepository.GetAllOfPatient(invalidPatientJmbg);
+
+            // Assert
+            result.Should().NotBeNull();
+            result.Should().BeEmpty();
+        }
+
     }
 }

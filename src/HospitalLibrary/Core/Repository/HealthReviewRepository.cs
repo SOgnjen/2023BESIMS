@@ -35,6 +35,13 @@ namespace HospitalLibrary.Core.Repository
             return _context.HealthReviews.ToList();
         }
 
+        public IEnumerable<HealthReview> GetAllOfPatient(int patientsJmbg)
+        {
+            return _context.HealthReviews
+                .Where(h => h.PatientJmbg == patientsJmbg)
+                .ToList();
+        }
+
         public HealthReview GetById(int id)
         {
             return _context.HealthReviews.Find(id);

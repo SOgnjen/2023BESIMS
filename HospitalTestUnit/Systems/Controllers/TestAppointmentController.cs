@@ -313,6 +313,39 @@ namespace HospitalTestUnit.Systems.Controllers
             result.Value.Should().BeEquivalentTo(expectedAppointment);
         }
 
+        [Fact]
+        public void GetAllOfPatient_ReturnsAppointmentsForValidPatient()
+        {
+            // Arrange
+            var validPatientJmbg = 1234567890;
+            var appointmentsForValidPatient = appointments.FindAll(a => a.PatientJmbg == validPatientJmbg);
+            appointmentServiceMock.Setup(service => service.GetAllOfPatient(validPatientJmbg)).Returns(appointmentsForValidPatient);
+
+            // Act
+            var result = appointmentController.GetAllOfPatient(validPatientJmbg) as OkObjectResult;
+
+            // Assert
+            result.Should().NotBeNull();
+            result.StatusCode.Should().Be(200);
+            result.Value.Should().BeOfType<List<Appointment>>();
+            result.Value.Should().BeEquivalentTo(appointmentsForValidPatient);
+        }
+
+        [Fact]
+        public void GetAllOfPatient_ReturnsNotFoundForInvalidPatient()
+        {
+            // Arrange
+            var invalidPatientJmbg = 999999999;
+            appointmentServiceMock.Setup(service => service.GetAllOfPatient(invalidPatientJmbg)).Returns(new List<Appointment>());
+
+            // Act
+            var result = appointmentController.GetAllOfPatient(invalidPatientJmbg) as NotFoundResult;
+
+            // Assert
+            result.Should().NotBeNull();
+            result.StatusCode.Should().Be(404);
+        }
+
 
     }
 }

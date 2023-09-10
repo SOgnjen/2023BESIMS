@@ -224,5 +224,40 @@ namespace HospitalTestUnit.Systems.Repositories
             // Assert
             deletedHealthReview.Should().BeNull();
         }
+
+        [Fact]
+        public void GetAllOfPatient_ReturnsHealthReviewsWithMatchingPatientJmbg()
+        {
+            // Arrange
+            dbContext = CreateDbContext();
+            dbContext.HealthReviews.AddRange(healthReviews);
+            dbContext.SaveChanges();
+            var healthReviewRepository = new HealthReviewRepository(dbContext);
+            var targetPatientJmbg = 1234567890;
+
+            // Act
+            var result = healthReviewRepository.GetAllOfPatient(targetPatientJmbg);
+
+            // Assert
+            result.Should().NotBeNull();
+            result.Should().NotBeEmpty();
+            result.Should().BeEquivalentTo(healthReviews.Where(h => h.PatientJmbg == targetPatientJmbg));
+        }
+
+        [Fact]
+        public void GetAllOfPatient_ReturnsEmptyListWhenNoHealthReviewsForPatientExist()
+        {
+            // Arrange
+            dbContext = CreateDbContext();
+            var healthReviewRepository = new HealthReviewRepository(dbContext);
+            var targetPatientJmbg = 99999999;
+
+            // Act
+            var result = healthReviewRepository.GetAllOfPatient(targetPatientJmbg);
+
+            // Assert
+            result.Should().NotBeNull();
+            result.Should().BeEmpty();
+        }
     }
 }

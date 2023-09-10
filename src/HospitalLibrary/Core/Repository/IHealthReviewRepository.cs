@@ -14,5 +14,6 @@ namespace HospitalLibrary.Core.Repository
         void Create(HealthReview healthReview);
         void Update(HealthReview healthReview);
         void Delete(HealthReview healthReview);
+        IEnumerable<HealthReview> GetAllOfPatient(int patientsJmbg);
     }
 }

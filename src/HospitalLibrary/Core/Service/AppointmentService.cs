@@ -61,5 +61,10 @@ namespace HospitalLibrary.Core.Service
         {
             _appointmentReposiotry.DeclineAppointment(appointment);
         }
+
+        public IEnumerable<Appointment> GetAllOfPatient(int patientsJmbg)
+        {
+            return _appointmentReposiotry.GetAllOfPatient(patientsJmbg);
+        }
     }
 }

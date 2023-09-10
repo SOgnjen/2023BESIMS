@@ -230,5 +230,40 @@ namespace HospitalTestUnit.Systems.Controllers
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(404);
         }
+
+        [Fact]
+        public void GetAllOfPatient_ReturnsHealthReviewsForMatchingPatient()
+        {
+            // Arrange
+            var targetPatientJmbg = 1234567890;
+            var healthReviewsWithMatchingJmbg = healthReviews.Where(h => h.PatientJmbg == targetPatientJmbg).ToList();
+            healthReviewServiceMock.Setup(service => service.GetAllOfPatient(targetPatientJmbg)).Returns(healthReviewsWithMatchingJmbg);
+
+            // Act
+            var result = healthReviewController.GetAllOfPatient(targetPatientJmbg) as OkObjectResult;
+
+            // Assert
+            result.Should().NotBeNull();
+            result.StatusCode.Should().Be(200);
+            result.Value.Should().BeOfType<List<HealthReview>>();
+            result.Value.Should().BeEquivalentTo(healthReviewsWithMatchingJmbg);
+        }
+
+        [Fact]
+        public void GetAllOfPatient_ReturnsNotFoundForNoMatchingHealthReviews()
+        {
+            // Arrange
+            var targetPatientJmbg = 999999999;
+            healthReviewServiceMock.Setup(service => service.GetAllOfPatient(targetPatientJmbg)).Returns(new List<HealthReview>());
+
+            // Act
+            var result = healthReviewController.GetAllOfPatient(targetPatientJmbg) as NotFoundResult;
+
+            // Assert
+            result.Should().NotBeNull();
+            result.StatusCode.Should().Be(404);
+        }
+
+
     }
 }

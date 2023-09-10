@@ -3,6 +3,7 @@ using HospitalLibrary.Core.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 
 namespace HospitalAPI.Controllers
 {
@@ -88,6 +89,19 @@ namespace HospitalAPI.Controllers
 
             _healthReviewService.Delete(healthReview);
             return NoContent();
+        }
+
+        // GET api/healtReaviews/patientsJmbg/1234567890
+        [HttpGet("/patientsJmbg/{patientsJmbg}")]
+        public ActionResult GetAllOfPatient(int patientsJmbg)
+        {
+            var healthReviewsForPatient = _healthReviewService.GetAllOfPatient(patientsJmbg);
+            if (healthReviewsForPatient == null || healthReviewsForPatient.Count() == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(healthReviewsForPatient);
         }
     }
 }

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
+using System.Linq;
 
 namespace HospitalAPI.Controllers
 {
@@ -176,6 +177,19 @@ namespace HospitalAPI.Controllers
         public class ReserveAppointmentRequest
         {
             public int PatientJmbg { get; set; }
+        }
+
+        // GET api/appointments/patientsJmbg/1234567890
+        [HttpGet("/patientsJmbg/{patientsJmbg}")]
+        public ActionResult GetAllOfPatient(int patientsJmbg)
+        {
+            var appointmentsForPatient = _appointmentService.GetAllOfPatient(patientsJmbg);
+            if (appointmentsForPatient == null || appointmentsForPatient.Count() == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(appointmentsForPatient);
         }
 
     }

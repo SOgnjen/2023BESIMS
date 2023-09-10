@@ -273,6 +273,38 @@ namespace HospitalTestUnit.Systems.Services
             appointmentRepositoryMock.Verify(repo => repo.DeclineAppointment(appointmentToDecline), Times.Once);
         }
 
+        [Fact]
+        public void GetAllOfPatient_ReturnsAppointmentsForValidPatient()
+        {
+            // Arrange
+            var targetPatientJmbg = 1234567890;
+            var appointmentsForPatient = appointments.Where(a => a.PatientJmbg == targetPatientJmbg).ToList();
+            appointmentRepositoryMock.Setup(repo => repo.GetAllOfPatient(targetPatientJmbg)).Returns(appointmentsForPatient);
+
+            // Act
+            var result = appointmentService.GetAllOfPatient(targetPatientJmbg);
+
+            // Assert
+            result.Should().NotBeNull();
+            result.Should().NotBeEmpty();
+            result.Should().BeEquivalentTo(appointmentsForPatient);
+        }
+
+        [Fact]
+        public void GetAllOfPatient_ReturnsEmptyListForInvalidPatient()
+        {
+            // Arrange
+            var invalidPatientJmbg = 999999999;
+            appointmentRepositoryMock.Setup(repo => repo.GetAllOfPatient(invalidPatientJmbg)).Returns(new List<Appointment>());
+
+            // Act
+            var result = appointmentService.GetAllOfPatient(invalidPatientJmbg);
+
+            // Assert
+            result.Should().NotBeNull();
+            result.Should().BeEmpty();
+        }
+
 
     }
 }

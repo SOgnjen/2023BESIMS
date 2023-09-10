@@ -20,5 +20,6 @@ namespace HospitalLibrary.Core.Repository
         Appointment FindMeAppointment(int doctorsJmbg, DateTime date, int priority);
         void ReserveAppointment(Appointment appointment, int userJmbg);
         void DeclineAppointment(Appointment appointment);
+        IEnumerable<Appointment> GetAllOfPatient(int patientsJmbg);
     }
 }
