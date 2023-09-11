@@ -111,6 +111,12 @@ namespace HospitalAPI.Controllers
                 return Unauthorized(new { Message = "Bad credentials" });
             }
 
+            // Check if the user is blocked
+            if (user.IsBlocked)
+            {
+                return Unauthorized(new { Message = "Your account has been blocked" });
+            }
+
             var sessionId = Guid.NewGuid().ToString();
 
             _httpContextAccessor.HttpContext.Session.SetString("SessionId", sessionId);

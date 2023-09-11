@@ -20,7 +20,7 @@ namespace HospitalLibrary.Core.Repository
 
         public void BlockUser(User user)
         {
-            user.IsBlocked = !user.IsBlocked; // Toggle the IsBlocked property
+            user.IsBlocked = !user.IsBlocked;
 
             _context.Entry(user).State = EntityState.Modified;
 
@@ -33,6 +33,7 @@ namespace HospitalLibrary.Core.Repository
                 throw;
             }
         }
+
 
         public void Create(User user)
         {
