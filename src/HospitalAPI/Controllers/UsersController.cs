@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace HospitalAPI.Controllers
 {
@@ -13,11 +14,13 @@ namespace HospitalAPI.Controllers
     {
         private readonly IUserService _userService;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly EmailService _emailService;
 
-        public UsersController(IUserService userService, IHttpContextAccessor httpContextAccessor)
+        public UsersController(IUserService userService, IHttpContextAccessor httpContextAccessor, EmailService emailService)
         {
             _userService = userService;
             _httpContextAccessor = httpContextAccessor;
+            _emailService = emailService;
         }
 
         // GET: api/users
@@ -197,6 +200,25 @@ namespace HospitalAPI.Controllers
             }
 
             return Ok(badUsers);
+        }
+
+        [HttpPut("block-user/{id}")]
+        public async Task<IActionResult> BlockUser(int id)
+        {
+            var user = _userService.GetById(id);
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+
+            user.IsBlocked = !user.IsBlocked;
+
+            string emailMessage = user.IsBlocked ? "You have been blocked." : "You have been unblocked.";
+            await _emailService.SendEmailAsync(user.Emails, "Account Status Update", emailMessage);
+
+            _userService.Update(user);
+
+            return Ok(user);
         }
     }
 }

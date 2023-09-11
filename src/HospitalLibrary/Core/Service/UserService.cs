@@ -17,6 +17,11 @@ namespace HospitalLibrary.Core.Service
             _userRepository = userRepository;
         }
 
+        public void BlockUser(User user)
+        {
+            _userRepository.BlockUser(user);
+        }
+
         public void Create(User user)
         {
             _userRepository.Create(user);

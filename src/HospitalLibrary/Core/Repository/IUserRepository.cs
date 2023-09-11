@@ -19,5 +19,6 @@ namespace HospitalLibrary.Core.Repository
         User GetByJmbg(int jmbg);
         IEnumerable<User> GetUsersBasedOnGuidance(GuidanceTo guidance);
         IEnumerable<User> GetAllBadUsers();
+        void BlockUser(User user);
     }
 }

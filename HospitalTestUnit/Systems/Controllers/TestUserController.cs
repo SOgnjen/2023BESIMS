@@ -71,9 +71,10 @@ namespace HospitalTestUnit.Systems.Controllers
             httpContextMock = new Mock<HttpContext>();
 
             var httpContextAccessorMock = new Mock<IHttpContextAccessor>();
+            var emailServiceMock = new Mock<EmailService>();
             httpContextAccessorMock.Setup(a => a.HttpContext).Returns(httpContextMock.Object);
 
-            usersController = new UsersController(userServiceMock.Object, httpContextAccessorMock.Object);
+            usersController = new UsersController(userServiceMock.Object, httpContextAccessorMock.Object, emailServiceMock.Object);
         }
 
         [Fact]

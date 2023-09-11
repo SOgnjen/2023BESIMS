@@ -17,5 +17,6 @@ namespace HospitalLibrary.Core.Service
         User FindRequiredLoginUser(string email, string password);
         IEnumerable<User> GetUsersBasedOnGuidance(GuidanceTo guidance);
         IEnumerable<User> GetAllBadUsers();
+        void BlockUser(User user);
     }
 }

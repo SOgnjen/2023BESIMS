@@ -18,6 +18,22 @@ namespace HospitalLibrary.Core.Repository
             _context = context;
         }
 
+        public void BlockUser(User user)
+        {
+            user.IsBlocked = !user.IsBlocked; // Toggle the IsBlocked property
+
+            _context.Entry(user).State = EntityState.Modified;
+
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
+        }
+
         public void Create(User user)
         {
             _context.Users.Add(user);
