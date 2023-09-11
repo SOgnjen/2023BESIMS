@@ -40,6 +40,11 @@ namespace HospitalLibrary.Core.Repository
             return _context.Users.ToList();
         }
 
+        public IEnumerable<User> GetAllBadUsers()
+        {
+            return _context.Users.Where(u => u.NumberOfDeclines >= 3).ToList();
+        }
+
         public IEnumerable<User> GetAllUsersWithSameRole(UserRole role)
         {
             return _context.Users.Where(u => u.Role == role).ToList();

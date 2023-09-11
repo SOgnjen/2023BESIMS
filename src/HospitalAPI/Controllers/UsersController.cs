@@ -160,5 +160,43 @@ namespace HospitalAPI.Controllers
 
             return Ok(users);
         }
+
+        // PUT api/users/update-declines/2
+        [HttpPut("update-declines/{id}")]
+        public ActionResult UpdateNumberOfDeclines(int id)
+        {
+            var user = _userService.GetById(id);
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+
+            user.NumberOfDeclines += 1;
+
+            try
+            {
+                _userService.Update(user);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Failed to update numberOfDeclines");
+            }
+
+            return Ok(user);
+        }
+
+        // GET api/users/all-bad-users
+        [HttpGet("all-bad-users")]
+        public ActionResult GetAllBadUsers()
+        {
+            var badUsers = _userService.GetAllBadUsers();
+
+            if (badUsers == null || !badUsers.Any())
+            {
+                return NotFound("No bad users found");
+            }
+
+            return Ok(badUsers);
+        }
     }
 }

@@ -18,5 +18,6 @@ namespace HospitalLibrary.Core.Repository
         IEnumerable<User> GetAllUsersWithSameRole(UserRole role);
         User GetByJmbg(int jmbg);
         IEnumerable<User> GetUsersBasedOnGuidance(GuidanceTo guidance);
+        IEnumerable<User> GetAllBadUsers();
     }
 }

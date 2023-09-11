@@ -16,5 +16,6 @@ namespace HospitalLibrary.Core.Service
         void Delete(User user);
         User FindRequiredLoginUser(string email, string password);
         IEnumerable<User> GetUsersBasedOnGuidance(GuidanceTo guidance);
+        IEnumerable<User> GetAllBadUsers();
     }
 }

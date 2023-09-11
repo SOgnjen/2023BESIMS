@@ -37,6 +37,11 @@ namespace HospitalLibrary.Core.Service
             return _userRepository.GetAll();
         }
 
+        public IEnumerable<User> GetAllBadUsers()
+        {
+            return _userRepository.GetAllBadUsers();
+        }
+
         public User GetById(int id)
         {
             return _userRepository.GetById(id);
