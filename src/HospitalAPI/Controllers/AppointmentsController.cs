@@ -153,6 +153,32 @@ namespace HospitalAPI.Controllers
             }
         }
 
+        // GET api/appointments/previous/{patientJmbg}
+        [HttpGet("previous/{patientJmbg}")]
+        public ActionResult GetPreviousAppointmentsOfPatient(int patientJmbg)
+        {
+            var currentDate = DateTime.Now;
+            var previousAppointments = _appointmentService
+                .GetAllOfPatient(patientJmbg)
+                .Where(appointment => appointment.Date < currentDate)
+                .ToList();
+
+            return Ok(previousAppointments);
+        }
+
+        // GET api/appointments/future/{patientJmbg}
+        [HttpGet("future/{patientJmbg}")]
+        public ActionResult GetFutureAppointmentsOfPatient(int patientJmbg)
+        {
+            var currentDate = DateTime.Now;
+            var futureAppointments = _appointmentService
+                .GetAllOfPatient(patientJmbg)
+                .Where(appointment => appointment.Date >= currentDate)
+                .ToList();
+
+            return Ok(futureAppointments);
+        }
+
         // POST api/appointments/decline/2
         [HttpPost("decline/{id}")]
         public ActionResult DeclineAppointment(int id)
@@ -177,19 +203,6 @@ namespace HospitalAPI.Controllers
         public class ReserveAppointmentRequest
         {
             public int PatientJmbg { get; set; }
-        }
-
-        // GET api/appointments/patientsJmbg/1234567890
-        [HttpGet("/patientsJmbg/{patientsJmbg}")]
-        public ActionResult GetAllOfPatient(int patientsJmbg)
-        {
-            var appointmentsForPatient = _appointmentService.GetAllOfPatient(patientsJmbg);
-            if (appointmentsForPatient == null || appointmentsForPatient.Count() == 0)
-            {
-                return NotFound();
-            }
-
-            return Ok(appointmentsForPatient);
         }
 
     }
