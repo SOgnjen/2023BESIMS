@@ -93,6 +93,7 @@ namespace HospitalLibrary.Core.Repository
                     query = query.Where(u => u.Role == UserRole.Role_Medic || u.Role == UserRole.Role_Psychiatrist);
                     break;
                 default:
+                    query = query.Where(u => u.Role == UserRole.Role_Medic);
                     break;
             }
 

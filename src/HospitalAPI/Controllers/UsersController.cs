@@ -53,6 +53,18 @@ namespace HospitalAPI.Controllers
                 return BadRequest(ModelState);
             }
 
+            var existingUserWithSameFirstName = _userService.GetAll().FirstOrDefault(u => u.Emails == user.Emails);
+            if (existingUserWithSameFirstName != null)
+            {
+                return Conflict(new { Message = "A user with the same first name already exists." });
+            }
+
+            var existingUserWithSameJmbg = _userService.GetAll().FirstOrDefault(u => u.Jmbg == user.Jmbg);
+            if (existingUserWithSameJmbg != null)
+            {
+                return Conflict(new { Message = "A user with the same JMBG already exists." });
+            }
+
             _userService.Create(user);
             return CreatedAtAction("GetById", new { id = user.Id }, user);
         }
