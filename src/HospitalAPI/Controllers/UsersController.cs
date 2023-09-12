@@ -1,5 +1,6 @@
 ﻿using HospitalLibrary.Core.Model;
 using HospitalLibrary.Core.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -207,6 +208,7 @@ namespace HospitalAPI.Controllers
 
             return Ok(badUsers);
         }
+
 
         [HttpPut("block-user/{id}")]
         public async Task<IActionResult> BlockUser(int id)

@@ -52,9 +52,19 @@ namespace HospitalLibrary.Core.Service
             return _userRepository.GetById(id);
         }
 
+        public User GetByJmbg(int userJmbg)
+        {
+            return _userRepository.GetByJmbg(userJmbg);
+        }
+
         public IEnumerable<User> GetUsersBasedOnGuidance(GuidanceTo guidance)
         {
             return _userRepository.GetUsersBasedOnGuidance(guidance);
+        }
+
+        public void SetGuidanceToNone(User user)
+        {
+            _userRepository.SetGuidanceToNone(user);
         }
 
         public void Update(User user)

@@ -20,5 +20,6 @@ namespace HospitalLibrary.Core.Repository
         IEnumerable<User> GetUsersBasedOnGuidance(GuidanceTo guidance);
         IEnumerable<User> GetAllBadUsers();
         void BlockUser(User user);
+        void SetGuidanceToNone(User user);
     }
 }

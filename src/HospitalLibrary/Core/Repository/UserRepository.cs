@@ -99,6 +99,22 @@ namespace HospitalLibrary.Core.Repository
             return query.ToList();
         }
 
+        public void SetGuidanceToNone(User user)
+        {
+            user.Guidance = GuidanceTo.None;
+
+            _context.Entry(user).State = EntityState.Modified;
+
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
+        }
+
         public void Update(User user)
         {
             _context.Entry(user).State = EntityState.Modified;

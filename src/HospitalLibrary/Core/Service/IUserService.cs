@@ -18,5 +18,7 @@ namespace HospitalLibrary.Core.Service
         IEnumerable<User> GetUsersBasedOnGuidance(GuidanceTo guidance);
         IEnumerable<User> GetAllBadUsers();
         void BlockUser(User user);
+        void SetGuidanceToNone(User user);
+        User GetByJmbg(int userJmbg);
     }
 }
