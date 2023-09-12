@@ -15,5 +15,8 @@ namespace HospitalLibrary.Core.Service
         void Update(HealthInfo healthInfo);
         void Delete(HealthInfo healthInfo);
         IEnumerable<HealthInfo> GetAllOfOwner(int ownersJmbg);
+        bool HadGoodPreassure(int ownersJmbg);
+        bool HighFat(int ownersJmbg);
+        bool IsInMenstruation(int ownersJmbg);
     }
 }

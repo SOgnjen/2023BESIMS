@@ -234,7 +234,7 @@ namespace HospitalAPI.Controllers
             user.IsBlocked = !user.IsBlocked;
 
             string emailMessage = user.IsBlocked ? "You have been blocked." : "You have been unblocked.";
-            await _emailService.SendEmailAsync(user.Emails, "Account Status Update", emailMessage);
+            //await _emailService.SendEmailAsync(user.Emails, "Account Status Update", emailMessage);
 
             _userService.Update(user);
 

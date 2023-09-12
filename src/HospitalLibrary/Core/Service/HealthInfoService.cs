@@ -42,6 +42,21 @@ namespace HospitalLibrary.Core.Service
             return _healthInfoRepository.GetById(id);
         }
 
+        public bool HadGoodPreassure(int ownersJmbg)
+        {
+            return _healthInfoRepository.HadGoodPreassure(ownersJmbg);
+        }
+
+        public bool HighFat(int ownersJmbg)
+        {
+            return _healthInfoRepository.HighFat(ownersJmbg);
+        }
+
+        public bool IsInMenstruation(int ownersJmbg)
+        {
+            return _healthInfoRepository.IsInMenstruation(ownersJmbg);
+        }
+
         public void Update(HealthInfo healthInfo)
         {
             _healthInfoRepository.Update(healthInfo);

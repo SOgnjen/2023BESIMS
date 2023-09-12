@@ -58,6 +58,8 @@ namespace HospitalAPI
             services.AddScoped<EmailService>();
             services.AddScoped<IInformationService, InformationService>();
             services.AddScoped<IInformationRepository, InformationRepository>();
+            services.AddScoped<IBloodAppointmentService, BloodAppointmentService>();
+            services.AddScoped<IBloodAppointmentRepository, BloodAppointmentRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
